@@ -1,0 +1,11 @@
+exiaplayagain_homepage:
+    path:     /
+    defaults: { _controller: ExiaplayagainBundle:Default:index }
+
+exiaplayagain_login:
+    path:     /login
+    defaults: { _controller: ExiaplayagainBundle:Default:login }
+
+exiaplayagain_logout:
+    path:     /logout
+    defaults: { _controller: ExiaplayagainBundle:Default:logout }

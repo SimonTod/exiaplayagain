@@ -1,0 +1,40 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }}
+{% endblock %}
+
+{% block head %}
+    {% if app.session.flashbag.get('notice') is not empty %}
+        <style>
+            #errors
+            {
+                padding-top: 30px;
+            }
+        </style>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    {% if app.session.flashbag.get('notice') is not empty %}
+        <div id="errors">
+            {% for message in app.session.flashbag.get('notice') %}
+                <div class="alert alert-info" role="alert">
+                    <span class="glyphicon glyphicon-ok-sign"></span>
+                    <strong>{{ message }}</strong>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="fluid-row" id="header">
+
+        <h1 class="title toc-ignore">Exia Play Again</h1>
+
+    </div>
+
+    <!--  -->
+    <p>Bienvenu sur Exia Play Again!</p>
+
+{% endblock %}

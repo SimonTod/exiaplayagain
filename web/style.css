@@ -1,0 +1,120 @@
+/* The choice of style from https://bootswatch.com/ is defined in _output.yaml with the theme option */
+
+/* Custom navbar color theme generated from
+   http://work.smarchal.com/twbscolor/css/222222090909ffff00ff00ff0 */
+
+.navbar-default {
+    background-color: #222222;
+    border-color: #090909;
+}
+.navbar-default .navbar-brand {
+    color: #FF2E33;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+    color: #FFC3C6;
+}
+.navbar-default .navbar-text {
+    color: #FF2E33;
+}
+.navbar-default .navbar-nav > li > a {
+    color: #FF2E33;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: #FFC3C6;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    color: #FFC3C6;
+    background-color: #090909;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    color: #FFC3C6;
+    background-color: #090909;
+}
+.navbar-default .navbar-toggle {
+    border-color: #090909;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+    background-color: #090909;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #FF2E33;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+    border-color: #FF2E33;
+}
+.navbar-default .navbar-link {
+    color: #FF2E33;
+}
+.navbar-default .navbar-link:hover {
+    color: #FFC3C6;
+}
+
+@media (max-width: 767px) {
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: #FF2E33;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+        color: #FFC3C6;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+        color: #FFC3C6;
+        background-color: #090909;
+    }
+}
+/* end Custom navbar ------------------------------------- */
+
+/* logo navbar */
+#xbros-logo {
+    height: 50px;
+}
+
+/* font-sizes */
+.fs-120 { font-size: 120%; }
+.fs-150 { font-size: 150%; }
+
+.navbar-default {
+    font-size: 150%;
+}
+
+/* padding for bootstrap navbar */
+body {
+    padding-top: 50px;
+    padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h2 {
+    padding-top: 55px;
+    margin-top: -55px;
+}
+.section h3 {
+    padding-top: 55px;
+    margin-top: -55px;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 50px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 50px;
+    background-color: #f5f5f5;
+}
+
+.container .text-muted {
+    padding: 0 15px;
+    margin: 10px 0;
+    text-align: left;
+}
+
