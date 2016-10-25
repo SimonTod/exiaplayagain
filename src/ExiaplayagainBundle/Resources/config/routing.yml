@@ -4,12 +4,12 @@ exiaplayagain_homepage:
 
 exiaplayagain_login:
     path:     /login
-    defaults: { _controller: ExiaplayagainBundle:Default:login }
+    defaults: { _controller: ExiaplayagainBundle:Account:login }
 
 exiaplayagain_logout:
     path:     /logout
-    defaults: { _controller: ExiaplayagainBundle:Default:logout }
+    defaults: { _controller: ExiaplayagainBundle:Account:logout }
 
 exiaplayagain_myaccount:
     path:     /myaccount
-    defaults: { _controller: ExiaplayagainBundle:Default:myaccount }
+    defaults: { _controller: ExiaplayagainBundle:Account:myaccount }
