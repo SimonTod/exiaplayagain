@@ -83,6 +83,39 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
     }
 
+    public function removeuserAction(Request $request, $username)
+    {
+        $session = $request->getSession();
+
+        if ($this->checkAdmin($session))
+        {
+            if(isset($username) && $username != $session->get('login'))
+            {
+                $em = $this
+                    ->getDoctrine()
+                    ->getManager();
+
+                $user = $em
+                    ->getRepository('ExiaplayagainBundle:Users')
+                    ->findOneByUsername($username);
+
+                $em->remove($user);
+                $em->flush();
+
+                $session->getFlashBag()->add('notice', "Utilisateur ".$username." supprimé avec succès");
+                return $this->redirect($this->generateUrl('exiaplayagain_userslist'));
+            }
+            else if ($username == $session->get('login'))
+            {
+                $session->getFlashBag()->add('error', "Vous ne pouvez pas supprimé l'utilisateur avec lequel vous êtes connectés");
+                return $this->redirect($this->generateUrl('exiaplayagain_userslist'));
+            }
+
+        }
+        else
+            return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+    }
+
     private function checkAdmin($session)
     {
         if(!$session->has('login'))

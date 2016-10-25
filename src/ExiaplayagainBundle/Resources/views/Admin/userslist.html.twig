@@ -36,11 +36,73 @@
                     {% else %}
                         <td><span class="glyphicon glyphicon-remove"></span></td>
                     {%  endif %}
-                    <td></td>
+                    <td>
+                        {#<a class="btn btn-danger"><i class="fa fa-user-times" aria-hidden="true"></i></a>#}
+                        <a class="btn btn-danger" data-toggle="modal" data-target="#confirmUserDelete" data-user="{{ user.username }}"><i class="fa fa-user-times" aria-hidden="true"></i></a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+
+        {#<div class="modal fade bs-example-modal-sm" id="confirmUserDelete" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">#}
+            {#<div class="modal-dialog modal-sm" role="document">#}
+                {#<div class="modal-content">#}
+                    {#...#}
+                {#</div>#}
+            {#</div>#}
+        {#</div>#}
     {% endif %}
+
+    <br>
+
+    {#<button type="button" class="btn btn-default" data-toggle="modal" data-target="#deleteModal" data-whatever="test modal 1">#}
+        {#test modal 1#}
+    {#</button>#}
+
+    {#<button type="button" class="btn btn-default" data-toggle="modal" data-target="#deleteModal" data-whatever="test modal 2">#}
+        {#test modal 2#}
+    {#</button>#}
+
+
+    <div class="modal fade" id="confirmUserDelete" tabindex="-1" role="dialog" aria-labelledby="confirmUserDeleteLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="confirmUserDeleteLabel">Warning !</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to remove the user ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                    <a id="confirmDelete" type="button" class="btn btn-danger"><i class="fa fa-user-times" aria-hidden="true"></i> remove user</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+
+    <script>
+        $('#confirmUserDelete').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('user') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            modal.find('.modal-title').text('Warning ')
+            modal.find('.modal-body').prop('innerHTML', 'Are you sure you want to remove the user '+recipient+' ?')
+            modal.find('#confirmDelete').text('remove user '+recipient)
+
+            var route = "{{ path('exiaplayagain_removeuser', { 'username': "PLACEHOLDER" }) }}";
+
+            modal.find('#confirmDelete').prop('href', route.replace("PLACEHOLDER", recipient))
+        })
+    </script>
 
 {% endblock %}
