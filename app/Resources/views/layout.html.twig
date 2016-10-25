@@ -25,7 +25,7 @@
     <script src="{{ asset('lib/bootstrap-3.3.5/shim/html5shiv.min.js') }}"></script>
     <script src="{{ asset('lib/bootstrap-3.3.5/shim/respond.min.js') }}"></script>
 
-    <!--<link rel="shortcut icon" type="image/x-icon" href="{# asset('favicon.ico') #}" />-->
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
@@ -135,7 +135,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a href="" class="pull-left">
-                    <img src="" onerror="this.src=''" onmouseover="this.src=''"; onmouseout="this.src=''"; alt="exiaplayagain" id="exiaplayagain-logo">
+                    <img style="width: 44px; margin: 5px;" src="{{ asset('img/logo_stream.png') }}" onerror="this.src='{{ asset('img/logo_stream.png') }}'" onmouseover="this.src='{{ asset('img/logo_stream_whitened.png') }}'"; onmouseout="this.src='{{ asset('img/logo_stream.png') }}'"; alt="exiaplayagain" id="exiaplayagain-logo">
                 </a>
             </div>
 
