@@ -13,3 +13,7 @@ exiaplayagain_logout:
 exiaplayagain_myaccount:
     path:     /myaccount
     defaults: { _controller: ExiaplayagainBundle:Account:myaccount }
+
+exiaplayagain_userslist:
+    path:     /admin/userslist
+    defaults: { _controller: ExiaplayagainBundle:Admin:userslist }

@@ -134,7 +134,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="" class="pull-left">
+                <a href="{{ path('exiaplayagain_homepage') }}" class="pull-left">
                     <img style="width: 44px; margin: 5px;" src="{{ asset('img/logo_stream.png') }}" onerror="this.src='{{ asset('img/logo_stream.png') }}'" onmouseover="this.src='{{ asset('img/logo_stream_whitened.png') }}'"; onmouseout="this.src='{{ asset('img/logo_stream.png') }}'"; alt="exiaplayagain" id="exiaplayagain-logo">
                 </a>
             </div>
@@ -146,7 +146,19 @@
 
                     <li><a href="{{ path('exiaplayagain_homepage') }}"><i class="fa fa-home"></i> </a></li>
 
+                    {% if session.is_admin is defined %}
+                        <!-- ADMIN menu -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-server"></i> <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('exiaplayagain_userslist') }}">Users List</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+
                 </ul>
+
+
 
                 <ul class="nav navbar-nav navbar-right">
                     {% if session.login is defined %}

@@ -1,0 +1,53 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }}  - Users List
+{% endblock %}
+
+{% block body %}
+
+    <div class="fluid-row" id="header">
+
+        <h1 class="title toc-ignore">ADMIN - Users List</h1>
+
+    </div>
+
+    {% for message in app.session.flashbag.get('notice') %}
+        <div class="errors">
+            <div class="alert alert-info" role="alert">
+                <span class="glyphicon glyphicon-ok-sign"></span>
+                <strong>{{ message }}</strong>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% if users is not empty %}
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Is Admin</th>
+                <th>Options</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.name }}</td>
+                    {% if user.isAdmin %}
+                        <td><span class="glyphicon glyphicon-ok"></span></td>
+                    {% else %}
+                        <td><span class="glyphicon glyphicon-remove"></span></td>
+                    {%  endif %}
+                    <td></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+{% endblock %}
