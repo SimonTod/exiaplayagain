@@ -76,6 +76,10 @@
         .table th:not([align]) {
             text-align: left;
         }
+        .flashbag
+        {
+            padding-top: 30px;
+        }
     </style>
 
     {% block head %}
@@ -185,6 +189,24 @@
             </div><!-- /.navbar-collapse -->
         </div><!--/.container -->
     </div><!--/.navbar -->
+
+    {% for message in app.session.flashbag.get('error') %}
+        <div class="flashbag">
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                <strong>{{ message }}</strong>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% for message in app.session.flashbag.get('notice') %}
+        <div class="flashbag">
+            <div class="alert alert-info" role="alert">
+                <span class="glyphicon glyphicon-ok-sign"></span>
+                <strong>{{ message }}</strong>
+            </div>
+        </div>
+    {% endfor %}
 
     {% block body %}
 

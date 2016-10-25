@@ -17,3 +17,7 @@ exiaplayagain_myaccount:
 exiaplayagain_userslist:
     path:     /admin/userslist
     defaults: { _controller: ExiaplayagainBundle:Admin:userslist }
+
+exiaplayagain_adduser:
+    path:     /admin/adduser
+    defaults: { _controller: ExiaplayagainBundle:Admin:adduser }

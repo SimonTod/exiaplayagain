@@ -38,7 +38,7 @@ class AccountController extends Controller
                         }
                         $session->getFlashBag()->add('notice', 'Utilisateur connecté');
                     } else {
-                        $session->getFlashBag()->add('notice', 'Utilisateur ou mot de passe incorrect');
+                        $session->getFlashBag()->add('error', 'Utilisateur ou mot de passe incorrect');
                         return $this->render('ExiaplayagainBundle:Account:login.html.twig');
                     }
 
@@ -47,7 +47,7 @@ class AccountController extends Controller
                 }
                 else
                 {
-                    $session->getFlashBag()->add('notice', 'Utilisateur ou mot de passe incorrect');
+                    $session->getFlashBag()->add('error', 'Utilisateur ou mot de passe incorrect');
                     return $this->render('ExiaplayagainBundle:Account:login.html.twig');
                 }
 
@@ -98,7 +98,7 @@ class AccountController extends Controller
                     }
                     else
                     {
-                        $session->getFlashBag()->add('notice', 'Veuillez entrer 2 fois le même nouveau mot de passe');
+                        $session->getFlashBag()->add('error', 'Veuillez entrer 2 fois le même nouveau mot de passe');
                         return $this->render('ExiaplayagainBundle:Account:myaccount.html.twig', array(
                             'session' => $session->all(),
                         ));
@@ -106,7 +106,7 @@ class AccountController extends Controller
                 }
                 else
                 {
-                    $session->getFlashBag()->add('notice', "Votre ancien mot de passe n'est pas correct");
+                    $session->getFlashBag()->add('error', "Votre ancien mot de passe n'est pas correct");
                     return $this->render('ExiaplayagainBundle:Account:myaccount.html.twig', array(
                         'session' => $session->all(),
                     ));

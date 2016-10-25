@@ -15,15 +15,6 @@
 
 {% block body %}
 
-    {% for message in app.session.flashbag.get('notice') %}
-        <div class="errors">
-            <div class="alert alert-info" role="alert">
-                <span class="glyphicon glyphicon-ok-sign"></span>
-                <strong>{{ message }}</strong>
-            </div>
-        </div>
-    {% endfor %}
-
     <div class="fluid-row" id="header">
 
         <h1 class="title toc-ignore">Exia Play Again</h1>

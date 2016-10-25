@@ -10,16 +10,9 @@
 
         <h1 class="title toc-ignore">ADMIN - Users List</h1>
 
-    </div>
+        <a class="btn btn-default" href="{{ path('exiaplayagain_adduser') }}"><i class="fa fa-user-plus" aria-hidden="true"></i> add user</a>
 
-    {% for message in app.session.flashbag.get('notice') %}
-        <div class="errors">
-            <div class="alert alert-info" role="alert">
-                <span class="glyphicon glyphicon-ok-sign"></span>
-                <strong>{{ message }}</strong>
-            </div>
-        </div>
-    {% endfor %}
+    </div>
 
     {% if users is not empty %}
         <table class="table table-hover">

@@ -8,15 +8,6 @@
 
     <h1>Mon Compte</h1>
 
-    {% for message in app.session.flashbag.get('notice') %}
-        <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign"></span>
-            <strong>Attention ! </strong>
-            {{ message }}
-        </div>
-
-    {% endfor %}
-
     <hr>
 
     <h3><i class="fa fa-key" aria-hidden="true"></i>  Changer de mot de passe</h3>

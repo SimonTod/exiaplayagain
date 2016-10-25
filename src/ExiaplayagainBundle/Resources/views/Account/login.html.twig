@@ -8,15 +8,6 @@
 
     <h1>Connexion</h1>
 
-    {% for message in app.session.flashbag.get('notice') %}
-        <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign"></span>
-            <strong>Attention ! </strong>
-            {{ message }}
-        </div>
-
-    {% endfor %}
-
     <form method="post" action="{{ path('exiaplayagain_login') }}">
         <div class="row">
             <div class="col-lg-6">
