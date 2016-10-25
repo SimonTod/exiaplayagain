@@ -5,28 +5,24 @@
 {% endblock %}
 
 {% block head %}
-    {% if app.session.flashbag.get('notice') is not empty %}
-        <style>
-            #errors
-            {
-                padding-top: 30px;
-            }
-        </style>
-    {% endif %}
+    <style>
+        .errors
+        {
+            padding-top: 30px;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
 
-    {% if app.session.flashbag.get('notice') is not empty %}
-        <div id="errors">
-            {% for message in app.session.flashbag.get('notice') %}
-                <div class="alert alert-info" role="alert">
-                    <span class="glyphicon glyphicon-ok-sign"></span>
-                    <strong>{{ message }}</strong>
-                </div>
-            {% endfor %}
+    {% for message in app.session.flashbag.get('notice') %}
+        <div class="errors">
+            <div class="alert alert-info" role="alert">
+                <span class="glyphicon glyphicon-ok-sign"></span>
+                <strong>{{ message }}</strong>
+            </div>
         </div>
-    {% endif %}
+    {% endfor %}
 
     <div class="fluid-row" id="header">
 

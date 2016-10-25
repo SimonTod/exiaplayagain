@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -37,11 +38,13 @@ class DefaultController extends Controller
                     $user = $users->findOneByUsername($_POST['login']);
 
                     $username = $user->getUsername();
-                    //$salt = exec("cat /safety/salt.txt");
 
-                    //if ($user->getPassword() == md5($_POST['password'].$salt.$username.$salt.$username)) {
-                    if ($user->getPassword() == $_POST['password']) {
+                    if (password_verify($_POST['password'], $user->getPassword())) {
                         $session->set('login', $_POST['login']);
+                        if ($user->getIsAdmin())
+                        {
+                            $session->set('is_admin', true);
+                        }
                         $session->getFlashBag()->add('notice', 'Utilisateur connecté');
                     } else {
                         $session->getFlashBag()->add('notice', 'Utilisateur ou mot de passe incorrect');
@@ -75,6 +78,53 @@ class DefaultController extends Controller
         }
 
         return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+    }
+
+    public function myaccountAction(Request $request)
+    {
+        $session = $request->getSession();
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
+        $user = $em
+            ->getRepository('ExiaplayagainBundle:Users')
+            ->findOneByUsername($session->get('login'));
+
+        if ($session->has('login')) {
+            if ($request->isMethod('POST')) {
+                if (password_verify($_POST['old_password'], $user->getPassword()))
+                {
+                    if ($_POST['new_password_1'] == $_POST['new_password_2'])
+                    {
+                        $user->setPassword(password_hash($_POST['new_password_1'], PASSWORD_DEFAULT));
+
+                        $em->persist($user);
+
+                        $em->flush();
+
+                        $session->getFlashBag()->add('notice', 'Mot de passe modifié avec succès');
+                        return $this->redirectToRoute('exiaplayagain_homepage');
+                    }
+                    else
+                    {
+                        $session->getFlashBag()->add('notice', 'Veuillez entrer 2 fois le même nouveau mot de passe');
+                        return $this->render('ExiaplayagainBundle:Default:myaccount.html.twig');
+                    }
+                }
+                else
+                {
+                    $session->getFlashBag()->add('notice', "Votre ancien mot de passe n'est pas correct");
+                    return $this->render('ExiaplayagainBundle:Default:myaccount.html.twig');
+                }
+
+            }
+            else {
+                return $this->render('ExiaplayagainBundle:Default:myaccount.html.twig');
+            }
+        }
+        else {
+            return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+        }
     }
 }
 

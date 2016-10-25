@@ -4,8 +4,9 @@
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="username" type="string" column="username" length="25" nullable="false"/>
-    <field name="name" type="string" column="name" length="30" nullable="false"/>
-    <field name="password" type="string" column="password" length="50" nullable="false"/>
+    <field name="username" type="string" column="username" length="255" nullable="false"/>
+    <field name="name" type="string" column="name" length="255" nullable="false"/>
+    <field name="password" type="string" column="password" length="255" nullable="false"/>
+    <field name="isAdmin" type="boolean" column="is_admin" nullable="false"/>
   </entity>
 </doctrine-mapping>

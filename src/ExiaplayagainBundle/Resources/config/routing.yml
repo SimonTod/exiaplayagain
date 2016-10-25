@@ -9,3 +9,7 @@ exiaplayagain_login:
 exiaplayagain_logout:
     path:     /logout
     defaults: { _controller: ExiaplayagainBundle:Default:logout }
+
+exiaplayagain_myaccount:
+    path:     /myaccount
+    defaults: { _controller: ExiaplayagainBundle:Default:myaccount }
