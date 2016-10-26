@@ -116,6 +116,56 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
     }
 
+    public function changeisadminAction(Request $request, $username)
+    {
+        $session = $request->getSession();
+
+        if ($this->checkAdmin($session))
+        {
+            if(isset($username) && $username != $session->get('login'))
+            {
+                $em = $this
+                    ->getDoctrine()
+                    ->getManager();
+
+                $user = $em
+                    ->getRepository('ExiaplayagainBundle:Users')
+                    ->findOneByUsername($username);
+
+//                $em->remove($user);
+//                $em->flush();
+//
+//                $session->getFlashBag()->add('notice', "Utilisateur ".$username." supprimé avec succès");
+
+                if ($user->getIsAdmin() == true)
+                {
+                    $user->setIsAdmin(false);
+
+                    $session->getFlashBag()->add('notice', "L'utilisateur ".$username." n'est plus un administrateur");
+                }
+                else
+                {
+                    $user->setIsAdmin(true);
+
+                    $session->getFlashBag()->add('notice', "L'utilisateur ".$username." est maintenant un administrateur");
+                }
+
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('exiaplayagain_userslist'));
+            }
+            else if ($username == $session->get('login'))
+            {
+                $session->getFlashBag()->add('error', "Vous ne pouvez pas enlver les droits d'administrations pour l'utilisateur avec lequel vous êtes connectés");
+                return $this->redirect($this->generateUrl('exiaplayagain_userslist'));
+            }
+
+        }
+        else
+            return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+    }
+
     private function checkAdmin($session)
     {
         if(!$session->has('login'))

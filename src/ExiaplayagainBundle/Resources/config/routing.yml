@@ -25,3 +25,7 @@ exiaplayagain_adduser:
 exiaplayagain_removeuser:
     path:     /admin/removeuser/{username}
     defaults: { _controller: ExiaplayagainBundle:Admin:removeuser }
+
+exiaplayagain_changeisadmin:
+    path:     /admin/changeisadmin/{username}
+    defaults: { _controller: ExiaplayagainBundle:Admin:changeisadmin }
