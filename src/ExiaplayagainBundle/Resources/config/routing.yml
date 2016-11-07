@@ -29,3 +29,11 @@ exiaplayagain_removeuser:
 exiaplayagain_changeisadmin:
     path:     /admin/changeisadmin/{username}
     defaults: { _controller: ExiaplayagainBundle:Admin:changeisadmin }
+
+exiaplayagain_gameslist:
+    path:     /admin/gameslist
+    defaults: { _controller: ExiaplayagainBundle:Admin:gameslist }
+
+exiaplayagain_addgame:
+    path:     /admin/addgame
+    defaults: { _controller: ExiaplayagainBundle:Admin:addgame }

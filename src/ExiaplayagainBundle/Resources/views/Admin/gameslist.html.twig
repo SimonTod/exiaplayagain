@@ -1,0 +1,82 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }}  - Games List
+{% endblock %}
+
+{% block head %}
+<style type="text/css">
+    .price {
+        font-weight: bold;
+    }
+
+    .price_green {
+        color: #00cc00;
+    }
+
+    .price_red {
+        color: #cc0000
+    }
+
+    .img_game {
+        max-width: 50px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="fluid-row" id="header">
+
+        <h1 class="title toc-ignore">ADMIN - Games List <i class="fa fa-gamepad" aria-hidden="true"></i></h1>
+
+        <a class="btn btn-default" href="{{ path('exiaplayagain_addgame') }}"><i class="fa fa-user-plus" aria-hidden="true"></i> add game</a>
+
+    </div>
+
+    {% if games is not empty %}
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Availability</th>
+                <th>Price</th>
+                <th>Image</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for game in games %}
+                <tr>
+                    <td>{{ game.id }}</td>
+                    <td>{{ game.name }}</td>
+                    <td>{{ game.type }}</td>
+                    <td>{{ game.availability }}</td>
+                    {% if game.price is not null and game.price != 0 %}
+                        <td class="price price_red">{{ game.price }}</td>
+                    {% else %}
+                        <td class="price price_green">0</td>
+                    {%  endif %}
+                    {% if game.image is not null %}
+                        <td><img class="img_game" src="{{ asset('img_games/' ~ game.image) }}"></td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <br>
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+
+{% endblock %}

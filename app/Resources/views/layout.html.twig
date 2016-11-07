@@ -27,7 +27,9 @@
 
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">#}
+
+    <script src="https://use.fontawesome.com/1c0ec46334.js"></script>
 
     <link rel="stylesheet" type="text/css" href="{{ asset('style.css') }}">
 
@@ -155,7 +157,9 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-server"></i> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ path('exiaplayagain_userslist') }}">Users List</a></li>
+                                <li class="dropdown-header">Admin actions</li>
+                                <li><a href="{{ path('exiaplayagain_userslist') }}"><i class="fa fa-users" aria-hidden="true"></i> Users List</a></li>
+                                <li><a href="{{ path('exiaplayagain_gameslist') }}"><i class="fa fa-gamepad" aria-hidden="true"></i> Games List</a></li>
                             </ul>
                         </li>
                     {% endif %}
@@ -168,12 +172,12 @@
                     {% if session.login is defined %}
                         <li class="dropdown">
                             <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
-                                <span class="glyphicon glyphicon-user"></span>
+                                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                                 {{ session.login }}
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ path('exiaplayagain_myaccount') }}">Mon Compte</a></li>
+                                <li><a href="{{ path('exiaplayagain_myaccount') }}"><i class="fa fa-cog" aria-hidden="true"></i> Mon Compte</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{{ path('exiaplayagain_logout') }}">Déconnexion</a></li>
                             </ul>
@@ -217,7 +221,7 @@
         <div class="container">
             <p class="text-muted">
                 Copyright <i class="fa fa-copyright"></i> <script type="text/javascript">var y=new Date().getFullYear();document.write(y)</script> Exia Play Again
-                Powered by <a href="http://symfony.com/">Symfony</a>, <a href="http://getbootstrap.com/">Bootstrap</a> and <a href="http://fontawesome.io/">Font Awesome</a>.
+                Powered by <a href="http://symfony.com/" target="_blank">Symfony</a>, <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> and <a href="http://fontawesome.io/" target="_blank">Font Awesome</a>.
             </p>
         </div>
     </footer>

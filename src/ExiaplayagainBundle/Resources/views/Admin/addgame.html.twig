@@ -1,0 +1,33 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }}  - Add Game
+{% endblock %}
+
+{% block head %}
+    <style>
+        #games div
+        {
+            padding: 10px;
+        }
+
+        #games label
+        {
+            padding-right: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="fluid-row" id="header">
+
+        <h1 class="title toc-ignore">ADMIN - Add Game <i class="fa fa-gamepad" aria-hidden="true"></i></h1>
+
+    </div>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}

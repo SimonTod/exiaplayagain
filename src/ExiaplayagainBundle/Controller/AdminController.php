@@ -3,11 +3,14 @@
 namespace ExiaplayagainBundle\Controller;
 
 use ExiaplayagainBundle\Entity\Users;
+use ExiaplayagainBundle\Entity\Games;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use ExiaplayagainBundle\Form\GamesType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AdminController extends Controller
 {
@@ -166,6 +169,89 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
     }
 
+    public function gameslistAction(Request $request)
+    {
+        $session = $request->getSession();$session = $request->getSession();
+
+        if ($this->checkAdmin($session)) {
+            $games = $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository('ExiaplayagainBundle:Games')
+                ->findBy(
+                    array(),    //where
+                    array('name' => 'ASC') //order
+                );
+
+            return $this->render('ExiaplayagainBundle:Admin:gameslist.html.twig', array(
+                'session' => $session->all(),
+                'games' => $games,
+            ));
+        }
+        else
+            return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+    }
+
+    public function addgameAction(Request $request)
+    {
+        $session = $request->getSession();
+
+        if ($this->checkAdmin($session)) {
+            $game = new Games();
+            $form = $this->createForm(GamesType::class, $game);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this
+                    ->getDoctrine()
+                    ->getManager();
+
+                $game = $form->getData();
+
+                $file = $game->getImage();
+
+                if (!is_null($file))
+                {
+                    if ($this->checkFileIsImage($file->guessExtension()))
+                    {
+                        $filename = md5(uniqid()).'.'.$file->guessExtension();
+
+                        $file->move(
+                            $this->getParameter('img_games_directory'),
+                            $filename
+                        );
+
+                        $game->setImage($filename);
+                    }
+                    else
+                    {
+                        $session->getFlashBag()->add('error', 'File is not a supported format (jpg, jpeg, png)');
+
+                        return $this->render('ExiaplayagainBundle:Admin:addgame.html.twig', array(
+                            'session' => $session->all(),
+                            'form' => $form->createView(),
+                        ));
+                    }
+
+                }
+
+                $em->persist($game);
+                $em->flush();
+
+                $session->getFlashBag()->add('notice', 'Game was added');
+                return $this->redirect($this->generateUrl('exiaplayagain_gameslist'));
+
+            }
+            else
+                return $this->render('ExiaplayagainBundle:Admin:addgame.html.twig', array(
+                    'session' => $session->all(),
+                    'form' => $form->createView(),
+                ));
+        }
+        else
+            return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+    }
+
     private function checkAdmin($session)
     {
         if(!$session->has('login'))
@@ -192,6 +278,16 @@ class AdminController extends Controller
             ->findOneByUsername($username);
 
         if (empty($user))
+            return true;
+        else
+            return false;
+    }
+
+    private function checkFileIsImage($imageExtension)
+    {
+        $acceptedExtensions = array('.jpg', '.JPG', '.jpeg', '.JPEG','.png', '.PNG');
+
+        if (in_array($imageExtension, $acceptedExtensions))
             return true;
         else
             return false;
