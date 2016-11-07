@@ -285,7 +285,7 @@ class AdminController extends Controller
 
     private function checkFileIsImage($imageExtension)
     {
-        $acceptedExtensions = array('.jpg', '.JPG', '.jpeg', '.JPEG','.png', '.PNG');
+        $acceptedExtensions = array('jpg', 'JPG', 'jpeg', 'JPEG','png', 'PNG');
 
         if (in_array($imageExtension, $acceptedExtensions))
             return true;
