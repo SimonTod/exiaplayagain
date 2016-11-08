@@ -34,9 +34,9 @@ class Games
     private $availability;
 
     /**
-     * @var integer
+     * @var float
      *
-     * @ORM\Column(name="price", type="integer", nullable=true)
+     * @ORM\Column(name="price", type="float", precision=10, scale=0, nullable=true)
      */
     private $price;
 
@@ -144,7 +144,7 @@ class Games
     /**
      * Set price
      *
-     * @param integer $price
+     * @param float $price
      * @return Games
      */
     public function setPrice($price)
@@ -157,7 +157,7 @@ class Games
     /**
      * Get price
      *
-     * @return integer 
+     * @return float 
      */
     public function getPrice()
     {
