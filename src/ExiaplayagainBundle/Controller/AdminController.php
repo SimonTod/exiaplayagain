@@ -235,6 +235,9 @@ class AdminController extends Controller
 
                 }
 
+                if(is_null($game->getPrice()))
+                    $game->setPrice(0);
+
                 $em->persist($game);
                 $em->flush();
 
@@ -247,6 +250,105 @@ class AdminController extends Controller
                     'session' => $session->all(),
                     'form' => $form->createView(),
                 ));
+        }
+        else
+            return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+    }
+
+    public function editgameAction(Request $request, $gameid)
+    {
+        $session = $request->getSession();
+
+        if ($this->checkAdmin($session)) {
+            $em = $this
+                ->getDoctrine()
+                ->getManager();
+
+            $game = $em
+                ->getRepository('ExiaplayagainBundle:Games')
+                ->findOneBy(
+                    array('id' => $gameid));
+            $gameImage = $game->getImage();
+
+            $form = $this->createForm(GamesType::class, $game);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $game = $form->getData();
+
+                $file = $game->getImage();
+
+                if (!is_null($file))
+                {
+                    if ($this->checkFileIsImage($file->guessExtension()))
+                    {
+                        $filename = md5(uniqid()).'.'.$file->guessExtension();
+
+                        $file->move(
+                            $this->getParameter('img_games_directory'),
+                            $filename
+                        );
+
+                        $game->setImage($filename);
+                    }
+                    else
+                    {
+                        $session->getFlashBag()->add('error', 'File is not a supported format (jpg, jpeg, png)');
+
+                        return $this->render('ExiaplayagainBundle:Admin:editgame.html.twig', array(
+                            'session' => $session->all(),
+                            'form' => $form->createView(),
+                        ));
+                    }
+
+                }
+                else if ($gameImage != '')
+                {
+                    $game->setImage($gameImage);
+                }
+
+                if(is_null($game->getPrice()))
+                    $game->setPrice(0);
+
+                $em->persist($game);
+                $em->flush();
+
+                $session->getFlashBag()->add('notice', 'Game was eddited');
+                return $this->redirect($this->generateUrl('exiaplayagain_gameslist'));
+
+            }
+            else
+                return $this->render('ExiaplayagainBundle:Admin:editgame.html.twig', array(
+                    'session' => $session->all(),
+                    'form' => $form->createView(),
+                ));
+        }
+        else
+            return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+    }
+
+    public function removegameAction(Request $request, $gameid)
+    {
+        $session = $request->getSession();
+
+        if ($this->checkAdmin($session))
+        {
+            $em = $this
+                ->getDoctrine()
+                ->getManager();
+
+            $game = $em
+                ->getRepository('ExiaplayagainBundle:Games')
+                ->findOneBy(
+                    array('id' => $gameid));
+
+            $gamename = $game->getName();
+
+            $em->remove($game);
+            $em->flush();
+
+            $session->getFlashBag()->add('notice', "The game ".$gamename." was successfully deleted");
+            return $this->redirect($this->generateUrl('exiaplayagain_gameslist'));
         }
         else
             return $this->redirect($this->generateUrl('exiaplayagain_homepage'));

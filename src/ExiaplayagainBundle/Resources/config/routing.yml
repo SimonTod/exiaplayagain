@@ -37,3 +37,11 @@ exiaplayagain_gameslist:
 exiaplayagain_addgame:
     path:     /admin/addgame
     defaults: { _controller: ExiaplayagainBundle:Admin:addgame }
+
+exiaplayagain_editgame:
+    path:     /admin/editgame/{gameid}
+    defaults: { _controller: ExiaplayagainBundle:Admin:editgame }
+
+exiaplayagain_removegame:
+    path:     /admin/removegame/{gameid}
+    defaults: { _controller: ExiaplayagainBundle:Admin:removegame }

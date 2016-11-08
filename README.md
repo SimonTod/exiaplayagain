@@ -15,6 +15,6 @@ TODO
     - url
     - image
 - [x] admin possibility to add games
-- [ ] esthetic game info view
-- [ ] admin possibility to modify / remove game
+- [x] esthetic game info view
+- [x] admin possibility to modify / remove game
 - [ ] user / games relation

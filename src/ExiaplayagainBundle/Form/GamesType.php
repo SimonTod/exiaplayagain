@@ -35,8 +35,8 @@ class GamesType extends AbstractType
             ->add('price', IntegerType::class, array('required' => false))
             ->add('info', TextareaType::class, array('required' => false))
             ->add('url', UrlType::class, array('required' => false))
-            ->add('image', FileType::class, array('required' => false))
-            ->add('save', SubmitType::class, array('label' => 'Add Game'))
+            ->add('image', FileType::class, array('required' => false, 'data_class' => null))
+            ->add('save', SubmitType::class, array('label' => 'Submit'))
         ;
 
         //http://symfony.com/doc/2.8/controller/upload_file.html

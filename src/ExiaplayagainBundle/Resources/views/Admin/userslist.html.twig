@@ -108,11 +108,11 @@
         $('#confirmChangeIsAdmin').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var recipientUser = button.data('user') // Extract info from data-* attributes
-            var recipienIsAdmin = button.data('isadmin')
+            var recipientIsAdmin = button.data('isadmin')
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
             var modal = $(this)
-            if (recipienIsAdmin)
+            if (recipientIsAdmin)
             {
                 modal.find('.modal-body').prop('innerHTML', 'Are you sure you want to set the user '+recipientUser+' as an non administrator ?')
                 modal.find('#confirmChangeIsAdminButton').text('remove '+recipientUser+'\'s admin rights')

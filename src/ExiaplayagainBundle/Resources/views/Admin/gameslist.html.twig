@@ -5,23 +5,37 @@
 {% endblock %}
 
 {% block head %}
-<style type="text/css">
-    .price {
-        font-weight: bold;
-    }
+    <style type="text/css">
+        .price {
+            font-weight: bold;
+        }
 
-    .price_green {
-        color: #00cc00;
-    }
+        .price_green {
+            color: #00cc00;
+        }
 
-    .price_red {
-        color: #cc0000
-    }
+        .price_red {
+            color: #cc0000
+        }
 
-    .img_game {
-        max-width: 50px;
-    }
-</style>
+        .img_game {
+            max-width: 50px;
+        }
+
+        #gameInfoImg {
+            max-width: 200px;
+        }
+
+        #gameInfoType, #gameInfoAvailability, #gameInfoPrice, #gameInfoUrl {
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+
+        #gameInfoInfo {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -48,7 +62,7 @@
             </thead>
             <tbody>
             {% for game in games %}
-                <tr>
+                <tr class="clickable-row" data-gameid="{{ game.id }}" data-gamename="{{ game.name }}" data-gametype="{{ game.type }}" data-gameavailability="{{ game.availability }}" data-gameprice="{{ game.price }}" data-gameinfo="{{ game.info }}" data-gameurl="{{ game.url }}" data-gameimage="{{ game.image }}">
                     <td>{{ game.id }}</td>
                     <td>{{ game.name }}</td>
                     <td>{{ game.type }}</td>
@@ -71,12 +85,131 @@
 
     <br>
 
+    <div class="modal fade" id="gameInfo" tabindex="-1" role="dialog" aria-labelledby="gameInfoLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="gameInfoLabel">Name !</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img id="gameInfoImg">
+                        </div>
+                        <div class="col-md-9">
+                            <h2 id="gameInfoName"></h2>
+                            <div id="gameInfoType"></div>
+                            <div id="gameInfoAvailability"></div>
+                            <div id="gameInfoPrice"></div>
+                            <a id="gameInfoUrl" class="btn btn-default" href=""></a>
+                        </div>
+                    </div> <!-- row -->
+                    <div id="gameInfoInfo"></div>
+                </div> <!-- modal-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                    <a href="" id="gameButtonEdit" type="button" class="btn btn-default">Edit Game</a>
+                    <button id="gameButtonRemove" class="btn btn-danger" data-toggle="modal" data-target="#confirmGameDelete" data-gameid="">Remove Game</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
+    <div class="modal fade" id="confirmGameDelete" tabindex="-1" role="dialog" aria-labelledby="confirmGameDeleteLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="confirmGameDeleteLabel">Warning !</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to remove the user ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                    <a id="confirmDelete" type="button" class="btn btn-danger"><i class="fa fa-user-times" aria-hidden="true"></i> remove Game</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
 {% block scripts %}
     {{ parent() }}
+
+    <script>
+        var gameId, gameName, gameType, gameAvailability, gamePrice, gameInfo, gameUrl, gameImage;
+        var gameImgDir = '{{ asset('img_games/') }}'
+
+        jQuery(document).ready(function($) {
+            $(".clickable-row").click(function() {
+//                window.document.location = $(this).data("href");
+                gameId = $(this).data("gameid");
+                gameName = $(this).data("gamename");
+                gameType = $(this).data("gametype");
+                gameAvailability = $(this).data("gameavailability");
+                gamePrice = $(this).data("gameprice");
+                gameInfo = $(this).data("gameinfo");
+                gameUrl = $(this).data("gameurl");
+                gameImage = $(this).data("gameimage");
+                console.log(gameImage)
+                $('#gameInfo').modal()
+            });
+        });
+
+        $('#gameInfo').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+//            modal.find('.modal-body').prop('innerHTML', 'Are you sure you want to remove the user ' + gameId + ' ?')
+            modal.find('#gameInfoLabel').prop('innerHTML', gameName)
+            modal.find('#gameInfoName').prop('innerHTML', gameName)
+            if (gameImage != '') {
+                modal.find('#gameInfoImg').prop('src', gameImgDir+gameImage)
+                modal.find('#gameInfoImg').prop('style', 'max-width: 200px;')
+            }
+            else {
+                modal.find('#gameInfoImg').prop('src', '')
+                modal.find('#gameInfoImg').prop('style', 'display:none;')
+            }
+            modal.find('#gameInfoType').prop('innerHTML', 'Type : '+gameType)
+            modal.find('#gameInfoAvailability').prop('innerHTML', 'Availability : '+gameAvailability)
+            if (gamePrice == '0')
+                modal.find('#gameInfoPrice').prop('class', 'price price_green')
+            else
+                modal.find('#gameInfoPrice').prop('class', 'price price_red')
+            modal.find('#gameInfoPrice').prop('innerHTML', 'Price : '+gamePrice)
+            modal.find('#gameInfoInfo').prop('innerHTML', gameInfo)
+            if (gameUrl != '') {
+                modal.find('#gameInfoUrl').prop('href', gameUrl)
+                modal.find('#gameInfoUrl').prop('innerHTML', '<i class="fa fa-external-link" aria-hidden="true"></i> '+gameUrl)
+                modal.find('#gameInfoUrl').prop('style', 'padding-top: 2px; padding-bottom: 2px;')
+            }
+            else {
+                modal.find('#gameInfoUrl').prop('style', 'display: none;')
+            }
+            var route = "{{ path('exiaplayagain_editgame', { 'gameid': "PLACEHOLDER" }) }}";
+            modal.find('#gameButtonEdit').prop('href', route.replace("PLACEHOLDER", gameId))
+
+            modal.find('#gameButtonRemove').attr('data-gameid', gameId)
+
+        });
+
+        $('#confirmGameDelete').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+
+            var modal = $(this)
+            modal.find('.modal-body').prop('innerHTML', 'Are you sure you want to remove the game '+gameName+' ?')
+            modal.find('#confirmDelete').text('remove game '+gameId)
+
+            var route = "{{ path('exiaplayagain_removegame', { 'gameid': "PLACEHOLDER" }) }}";
+
+            modal.find('#confirmDelete').prop('href', route.replace("PLACEHOLDER", gameId))
+        })
+
+    </script>
 
 {% endblock %}
