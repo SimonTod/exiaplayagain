@@ -4,12 +4,14 @@ namespace ExiaplayagainBundle\Controller;
 
 use ExiaplayagainBundle\Entity\Users;
 use ExiaplayagainBundle\Entity\Games;
+use ExiaplayagainBundle\Entity\Votes;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use ExiaplayagainBundle\Form\GamesType;
+use ExiaplayagainBundle\Form\VotesType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AdminController extends Controller
@@ -349,6 +351,103 @@ class AdminController extends Controller
 
             $session->getFlashBag()->add('notice', "The game ".$gamename." was successfully deleted");
             return $this->redirect($this->generateUrl('exiaplayagain_gameslist'));
+        }
+        else
+            return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+    }
+
+    public function voteslistAction(Request $request)
+    {
+        $session = $request->getSession();$session = $request->getSession();
+
+        if ($this->checkAdmin($session)) {
+
+            $votes_upcoming = $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository('ExiaplayagainBundle:Votes')
+                ->createQueryBuilder('u')
+                ->where('u.limitedDate > :datetimecourant')
+                ->setParameter('datetimecourant', new \DateTime(date('Y-m-d G:i:s')))
+                ->orderBy('u.limitedDate', 'ASC')
+                ->getQuery()
+                ->getResult()
+            ;
+
+            $votes_passed = $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository('ExiaplayagainBundle:Votes')
+                ->createQueryBuilder('p')
+                ->where('p.limitedDate < :datetimecourant')
+                ->setParameter('datetimecourant', new \DateTime(date('Y-m-d G:i:s')))
+                ->orderBy('p.limitedDate', 'DESC')
+                ->getQuery()
+                ->getResult()
+            ;
+
+            return $this->render('ExiaplayagainBundle:Admin:voteslist.html.twig', array(
+                'session' => $session->all(),
+                'votes_upcoming' => $votes_upcoming,
+                'votes_passed' => $votes_passed,
+            ));
+        }
+        else
+            return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+    }
+
+    public function addvoteAction(Request $request)
+    {
+        $session = $request->getSession();$session = $request->getSession();
+
+        if ($this->checkAdmin($session)) {
+            $vote = new Votes();
+            $form = $this->createForm(VotesType::class, $vote);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this
+                    ->getDoctrine()
+                    ->getManager();
+
+                $vote = $form->getData();
+
+                $em->persist($vote);
+                $em->flush();
+
+                $session->getFlashBag()->add('notice', 'Vote was added');
+                return $this->redirect($this->generateUrl('exiaplayagain_voteslist'));
+
+            }
+            else
+                return $this->render('ExiaplayagainBundle:Admin:addvote.html.twig', array(
+                    'session' => $session->all(),
+                    'form' => $form->createView(),
+                ));
+        }
+        else
+            return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+    }
+
+    public function removevoteAction(Request $request, $voteid)
+    {
+        $session = $request->getSession();
+
+        if ($this->checkAdmin($session)) {
+            $em = $this
+                ->getDoctrine()
+                ->getManager();
+
+            $vote = $em
+                ->getRepository('ExiaplayagainBundle:Votes')
+                ->findOneBy(
+                    array('id' => $voteid));
+
+            $em->remove($vote);
+            $em->flush();
+
+            $session->getFlashBag()->add('notice', "The vote was successfully deleted");
+            return $this->redirect($this->generateUrl('exiaplayagain_voteslist'));
         }
         else
             return $this->redirect($this->generateUrl('exiaplayagain_homepage'));

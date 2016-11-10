@@ -160,6 +160,7 @@
                                 <li class="dropdown-header">Admin actions</li>
                                 <li><a href="{{ path('exiaplayagain_userslist') }}"><i class="fa fa-users" aria-hidden="true"></i> Users List</a></li>
                                 <li><a href="{{ path('exiaplayagain_gameslist') }}"><i class="fa fa-gamepad" aria-hidden="true"></i> Games List</a></li>
+                                <li><a href="{{ path('exiaplayagain_voteslist') }}"><i class="fa fa-th-list" aria-hidden="true"></i> Votes list</a></li>
                             </ul>
                         </li>
                     {% endif %}
@@ -196,7 +197,8 @@
 
     {% for message in app.session.flashbag.get('error') %}
         <div class="flashbag">
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <span class="glyphicon glyphicon-remove-sign"></span>
                 <strong>{{ message }}</strong>
             </div>
@@ -205,7 +207,8 @@
 
     {% for message in app.session.flashbag.get('notice') %}
         <div class="flashbag">
-            <div class="alert alert-info" role="alert">
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <span class="glyphicon glyphicon-ok-sign"></span>
                 <strong>{{ message }}</strong>
             </div>
@@ -215,7 +218,6 @@
     {% block body %}
 
     {% endblock %}
-
 
     <footer class="footer">
         <div class="container">

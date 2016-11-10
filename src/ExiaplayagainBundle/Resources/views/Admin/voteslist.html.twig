@@ -1,0 +1,86 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }}  - Games List
+{% endblock %}
+
+{% block head %}
+    <style type="text/css">
+        #votescontent {
+            padding-top : 10px;
+        }
+
+        #votescontent .tab-content {
+            padding : 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="fluid-row" id="header">
+
+        <h1 class="title toc-ignore">ADMIN - Votes List <i class="fa fa-th-list" aria-hidden="true"></i></h1>
+
+        <a class="btn btn-default" href="{{ path('exiaplayagain_addvote') }}"><i class="fa fa-user-plus" aria-hidden="true"></i> add vote</a>
+
+    </div>
+
+
+    <div id="votescontent">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#upcoming">Upcoming</a></li>
+            <li><a data-toggle="tab" href="#passed">Passed</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="upcoming" class="tab-pane fade in active">
+                {% for vote_upcoming in votes_upcoming %}
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">{{ vote_upcoming.limitedDate|date('d-M-Y \\a\\t H:i') }}</div>
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">{{ vote_upcoming.game1.name }}</li>
+                                <li class="list-group-item">{{ vote_upcoming.game2.name }}</li>
+                                <li class="list-group-item">{{ vote_upcoming.game3.name }}</li>
+                                <li class="list-group-item">{{ vote_upcoming.game4.name }}</li>
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            <a href="{{ path('exiaplayagain_removevote', { 'voteid' : vote_upcoming.id }) }}" class="btn btn-danger"><i class="fa fa-times-rectangle" aria-hidden="true"></i> remove vote</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div id="passed" class="tab-pane fade">
+                {% for vote_passed in votes_passed %}
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">{{ vote_passed.limitedDate|date('d-M-Y \\a\\t H:i') }}</div>
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">{{ vote_passed.game1.name }}</li>
+                                <li class="list-group-item">{{ vote_passed.game2.name }}</li>
+                                <li class="list-group-item">{{ vote_passed.game3.name }}</li>
+                                <li class="list-group-item">{{ vote_passed.game4.name }}</li>
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            <a href="{{ path('exiaplayagain_removevote', { 'voteid' : vote_passed.id }) }}" class="btn btn-danger"><i class="fa fa-times-rectangle" aria-hidden="true"></i> remove vote</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+
+    <script>
+
+    </script>
+
+{% endblock %}

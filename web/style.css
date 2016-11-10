@@ -118,3 +118,20 @@ body {
     text-align: left;
 }
 
+/*change .panel-primary color*/
+.panel-primary {
+    border-color: #FF2E33;
+}
+
+.panel-primary > .panel-heading {
+    background-color: rgba(255, 59, 59, 0.72);
+    border-color: #FF2E33;
+}
+
+.panel-primary > .panel-body {
+    background-color: rgba(255, 59, 59, 0.20);
+}
+
+.panel-primary .list-group-item {
+    border-color: rgba(255, 59, 59, 0.50);
+}

@@ -45,3 +45,15 @@ exiaplayagain_editgame:
 exiaplayagain_removegame:
     path:     /admin/removegame/{gameid}
     defaults: { _controller: ExiaplayagainBundle:Admin:removegame }
+
+exiaplayagain_voteslist:
+    path:     /admin/voteslist
+    defaults: { _controller: ExiaplayagainBundle:Admin:voteslist }
+
+exiaplayagain_addvote:
+    path:     /admin/addvote
+    defaults: { _controller: ExiaplayagainBundle:Admin:addvote }
+
+exiaplayagain_removevote:
+    path:     /admin/removevote/{voteid}
+    defaults: { _controller: ExiaplayagainBundle:Admin:removevote }

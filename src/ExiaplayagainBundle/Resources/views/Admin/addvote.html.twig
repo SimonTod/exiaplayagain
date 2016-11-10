@@ -1,0 +1,33 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }}  - Add Vote
+{% endblock %}
+
+{% block head %}
+    <style>
+        #votes div
+        {
+            padding: 10px;
+        }
+
+        #votes label
+        {
+            padding-right: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="fluid-row" id="header">
+
+        <h1 class="title toc-ignore">ADMIN - Add Vote <i class="fa fa-th-list" aria-hidden="true"></i></h1>
+
+    </div>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}
