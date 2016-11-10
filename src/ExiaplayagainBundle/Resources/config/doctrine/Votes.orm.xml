@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ExiaplayagainBundle\Entity\Votes" table="votes">
+    <indexes>
+      <index name="game_1" columns="game_1"/>
+      <index name="game_2" columns="game_2"/>
+      <index name="game_3" columns="game_3"/>
+      <index name="game_4" columns="game_4"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="limitedDate" type="datetime" column="limited_date" nullable="false"/>
+    <many-to-one field="game1" target-entity="Games">
+      <join-columns>
+        <join-column name="game_1" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="game2" target-entity="Games">
+      <join-columns>
+        <join-column name="game_2" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="game3" target-entity="Games">
+      <join-columns>
+        <join-column name="game_3" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="game4" target-entity="Games">
+      <join-columns>
+        <join-column name="game_4" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
