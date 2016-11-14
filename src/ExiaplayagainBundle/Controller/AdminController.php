@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AdminController extends Controller
 {
+    private $superAdminUsers = array('simon', 'kevinsiry');
+
     public function userslistAction(Request $request)
     {
         $session = $request->getSession();
@@ -94,7 +96,7 @@ class AdminController extends Controller
 
         if ($this->checkAdmin($session))
         {
-            if(isset($username) && $username != $session->get('login'))
+            if(isset($username) && $username != $session->get('login') && !in_array($username, $this->superAdminUsers))
             {
                 $em = $this
                     ->getDoctrine()
@@ -125,7 +127,11 @@ class AdminController extends Controller
                 $session->getFlashBag()->add('error', "Vous ne pouvez pas supprimé l'utilisateur avec lequel vous êtes connectés");
                 return $this->redirect($this->generateUrl('exiaplayagain_userslist'));
             }
-
+            else if (in_array($username, $this->superAdminUsers))
+            {
+                $session->getFlashBag()->add('error', "Vous ne pouvez pas supprimé un Super Administrateur");
+                return $this->redirect($this->generateUrl('exiaplayagain_userslist'));
+            }
         }
         else
             return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
@@ -137,7 +143,7 @@ class AdminController extends Controller
 
         if ($this->checkAdmin($session))
         {
-            if(isset($username) && $username != $session->get('login'))
+            if(isset($username) && $username != $session->get('login') && !in_array($username, $this->superAdminUsers))
             {
                 $em = $this
                     ->getDoctrine()
@@ -146,11 +152,6 @@ class AdminController extends Controller
                 $user = $em
                     ->getRepository('ExiaplayagainBundle:Users')
                     ->findOneByUsername($username);
-
-//                $em->remove($user);
-//                $em->flush();
-//
-//                $session->getFlashBag()->add('notice', "Utilisateur ".$username." supprimé avec succès");
 
                 if ($user->getIsAdmin() == true)
                 {
@@ -175,7 +176,11 @@ class AdminController extends Controller
                 $session->getFlashBag()->add('error', "Vous ne pouvez pas enlver les droits d'administrations pour l'utilisateur avec lequel vous êtes connectés");
                 return $this->redirect($this->generateUrl('exiaplayagain_userslist'));
             }
-
+            else if (in_array($username, $this->superAdminUsers))
+            {
+                $session->getFlashBag()->add('error', "Vous ne pouvez pas enlever les droites d'administrations pour un Super Administrateur");
+                return $this->redirect($this->generateUrl('exiaplayagain_userslist'));
+            }
         }
         else
             return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
