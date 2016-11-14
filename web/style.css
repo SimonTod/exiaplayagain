@@ -135,3 +135,7 @@ body {
 .panel-primary .list-group-item {
     border-color: rgba(255, 59, 59, 0.50);
 }
+
+.progress {
+    margin-bottom: 0;
+}

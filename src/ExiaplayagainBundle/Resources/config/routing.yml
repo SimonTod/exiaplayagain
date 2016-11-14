@@ -57,3 +57,11 @@ exiaplayagain_addvote:
 exiaplayagain_removevote:
     path:     /admin/removevote/{voteid}
     defaults: { _controller: ExiaplayagainBundle:Admin:removevote }
+
+exiaplayagain_votes:
+    path:     /votes
+    defaults: { _controller: ExiaplayagainBundle:Default:votes }
+
+exiaplayagain_dovote:
+    path:     /dovote/{voteid}
+    defaults: { _controller: ExiaplayagainBundle:Default:dovote }

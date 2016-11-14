@@ -1,0 +1,484 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }}
+{% endblock %}
+
+{% block head %}
+    <style type="text/css">
+        #votescontent {
+            padding-top : 10px;
+        }
+
+        #votescontent .tab-content {
+            padding : 10px;
+        }
+
+        .price {
+            font-weight: bold;
+        }
+
+        .price_green {
+            color: #00cc00;
+        }
+
+        .price_red {
+            color: #cc0000
+        }
+
+        .img_game {
+            max-width: 50px;
+        }
+
+        #gameInfoImg {
+            max-width: 200px;
+        }
+
+        #gameInfoType, #gameInfoAvailability, #gameInfoPrice, #gameInfoUrl {
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+
+        #gameInfoInfo {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        .progress {
+            margin-top: 7px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="fluid-row" id="header">
+
+        <h1 class="title toc-ignore">Votes List <i class="fa fa-th-list" aria-hidden="true"></i></h1>
+
+    </div>
+
+    <div id="votescontent">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#upcoming">Upcoming</a></li>
+            <li><a data-toggle="tab" href="#passed">Passed</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="upcoming" class="tab-pane fade in active">
+                {% for vote_upcoming in votes_upcoming %}
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">{{ vote_upcoming.limitedDate|date('d-M-Y \\a\\t H:i') }}</div>
+                        <div class="panel-body">
+                            {% if vote_upcoming.userHasVoted %}
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="radio disabled">
+                                                    <label><input type="radio" name="radiovote{{ vote_upcoming.id }}" value="{{ vote_upcoming.game1.id }}" disabled
+                                                                {% if vote_upcoming.votedGame.id == vote_upcoming.game1.id %}
+                                                                    checked
+                                                                {% endif %}
+                                                        >{{ vote_upcoming.game1.name }}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <a class="btn btn-default displayGameInfo" data-gameid="{{ vote_upcoming.game1.id }}" data-gamename="{{ vote_upcoming.game1.name }}" data-gametype="{{ vote_upcoming.game1.type }}" data-gameavailability="{{ vote_upcoming.game1.availability }}" data-gameprice="{{ vote_upcoming.game1.price }}" data-gameinfo="{{ vote_upcoming.game1.info }}" data-gameurl="{{ vote_upcoming.game1.url }}" data-gameimage="{{ vote_upcoming.game1.image }}">Game Info</a>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ vote_upcoming.percentVotesGame1 }}"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width: {{ vote_upcoming.percentVotesGame1 }}%">
+                                                        {% if vote_upcoming.numVotesGame1 > 1 %}
+                                                            {{ vote_upcoming.numVotesGame1 }} votes / {{ vote_upcoming.percentVotesGame1 }} %
+                                                        {% else %}
+                                                            {{ vote_upcoming.numVotesGame1 }} vote / {{ vote_upcoming.percentVotesGame1 }} %
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> <!-- .row -->
+                                    </li> <!-- .list-group-item -->
+
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="radio disabled">
+                                                    <label><input type="radio" name="radiovote{{ vote_upcoming.id }}" value="{{ vote_upcoming.game2.id }}" disabled
+                                                                {% if vote_upcoming.votedGame.id == vote_upcoming.game2.id %}
+                                                                    checked
+                                                                {% endif %}
+                                                        >{{ vote_upcoming.game2.name }}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <a class="btn btn-default displayGameInfo" data-gameid="{{ vote_upcoming.game2.id }}" data-gamename="{{ vote_upcoming.game2.name }}" data-gametype="{{ vote_upcoming.game2.type }}" data-gameavailability="{{ vote_upcoming.game2.availability }}" data-gameprice="{{ vote_upcoming.game2.price }}" data-gameinfo="{{ vote_upcoming.game2.info }}" data-gameurl="{{ vote_upcoming.game2.url }}" data-gameimage="{{ vote_upcoming.game2.image }}">Game Info</a>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ vote_upcoming.percentVotesGame2 }}"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width: {{ vote_upcoming.percentVotesGame2 }}%">
+                                                        {% if vote_upcoming.numVotesGame2 > 1 %}
+                                                            {{ vote_upcoming.numVotesGame2 }} votes / {{ vote_upcoming.percentVotesGame2 }} %
+                                                        {% else %}
+                                                            {{ vote_upcoming.numVotesGame2 }} vote / {{ vote_upcoming.percentVotesGame2 }} %
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> <!-- .row -->
+                                    </li> <!-- .list-group-item -->
+
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="radio disabled">
+                                                    <label><input type="radio" name="radiovote{{ vote_upcoming.id }}" value="{{ vote_upcoming.game3.id }}" disabled
+                                                                {% if vote_upcoming.votedGame.id == vote_upcoming.game3.id %}
+                                                                    checked
+                                                                {% endif %}
+                                                        >{{ vote_upcoming.game3.name }}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <a class="btn btn-default displayGameInfo" data-gameid="{{ vote_upcoming.game3.id }}" data-gamename="{{ vote_upcoming.game3.name }}" data-gametype="{{ vote_upcoming.game3.type }}" data-gameavailability="{{ vote_upcoming.game3.availability }}" data-gameprice="{{ vote_upcoming.game3.price }}" data-gameinfo="{{ vote_upcoming.game3.info }}" data-gameurl="{{ vote_upcoming.game3.url }}" data-gameimage="{{ vote_upcoming.game3.image }}">Game Info</a>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ vote_upcoming.percentVotesGame3 }}"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width: {{ vote_upcoming.percentVotesGame3 }}%">
+                                                        {% if vote_upcoming.numVotesGame3 > 1 %}
+                                                            {{ vote_upcoming.numVotesGame3 }} votes / {{ vote_upcoming.percentVotesGame3 }} %
+                                                        {% else %}
+                                                            {{ vote_upcoming.numVotesGame3 }} vote / {{ vote_upcoming.percentVotesGame3 }} %
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> <!-- .row -->
+                                    </li> <!-- .list-group-item -->
+
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="radio disabled">
+                                                    <label><input type="radio" name="radiovote{{ vote_upcoming.id }}" value="{{ vote_upcoming.game4.id }}" disabled
+                                                                {% if vote_upcoming.votedGame.id == vote_upcoming.game4.id %}
+                                                                    checked
+                                                                {% endif %}
+                                                        >{{ vote_upcoming.game4.name }}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <a class="btn btn-default displayGameInfo" data-gameid="{{ vote_upcoming.game4.id }}" data-gamename="{{ vote_upcoming.game4.name }}" data-gametype="{{ vote_upcoming.game4.type }}" data-gameavailability="{{ vote_upcoming.game4.availability }}" data-gameprice="{{ vote_upcoming.game4.price }}" data-gameinfo="{{ vote_upcoming.game4.info }}" data-gameurl="{{ vote_upcoming.game4.url }}" data-gameimage="{{ vote_upcoming.game4.image }}">Game Info</a>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ vote_upcoming.percentVotesGame4 }}"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width: {{ vote_upcoming.percentVotesGame4 }}%">
+                                                        {% if vote_upcoming.numVotesGame4 > 1 %}
+                                                            {{ vote_upcoming.numVotesGame4 }} votes / {{ vote_upcoming.percentVotesGame4 }} %
+                                                        {% else %}
+                                                            {{ vote_upcoming.numVotesGame4 }} vote / {{ vote_upcoming.percentVotesGame4 }} %
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> <!-- .row -->
+                                    </li> <!-- .list-group-item -->
+
+                                </ul> <!-- .list-group -->
+                            {% else %}
+                                <form method="post" action="{{ path('exiaplayagain_dovote', { 'voteid': vote_upcoming.id }) }}">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="radio">
+                                                        <label><input type="radio" name="radiovote{{ vote_upcoming.id }}" value="{{ vote_upcoming.game1.id }}">{{ vote_upcoming.game1.name }}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <a class="btn btn-default displayGameInfo" data-gameid="{{ vote_upcoming.game1.id }}" data-gamename="{{ vote_upcoming.game1.name }}" data-gametype="{{ vote_upcoming.game1.type }}" data-gameavailability="{{ vote_upcoming.game1.availability }}" data-gameprice="{{ vote_upcoming.game1.price }}" data-gameinfo="{{ vote_upcoming.game1.info }}" data-gameurl="{{ vote_upcoming.game1.url }}" data-gameimage="{{ vote_upcoming.game1.image }}">Game Info</a>
+                                                </div>
+                                                <div class="col-md-7">
+
+                                                </div>
+                                            </div> <!-- .row -->
+                                        </li> <!-- .list-group-item -->
+
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="radio">
+                                                        <label><input type="radio" name="radiovote{{ vote_upcoming.id }}" value="{{ vote_upcoming.game2.id }}">{{ vote_upcoming.game2.name }}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <a class="btn btn-default displayGameInfo" data-gameid="{{ vote_upcoming.game2.id }}" data-gamename="{{ vote_upcoming.game2.name }}" data-gametype="{{ vote_upcoming.game2.type }}" data-gameavailability="{{ vote_upcoming.game2.availability }}" data-gameprice="{{ vote_upcoming.game2.price }}" data-gameinfo="{{ vote_upcoming.game2.info }}" data-gameurl="{{ vote_upcoming.game2.url }}" data-gameimage="{{ vote_upcoming.game2.image }}">Game Info</a>
+                                                </div>
+                                                <div class="col-md-7">
+
+                                                </div>
+                                            </div> <!-- .row -->
+                                        </li> <!-- .list-group-item -->
+
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="radio">
+                                                        <label><input type="radio" name="radiovote{{ vote_upcoming.id }}" value="{{ vote_upcoming.game3.id }}">{{ vote_upcoming.game3.name }}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <a class="btn btn-default displayGameInfo" data-gameid="{{ vote_upcoming.game3.id }}" data-gamename="{{ vote_upcoming.game3.name }}" data-gametype="{{ vote_upcoming.game3.type }}" data-gameavailability="{{ vote_upcoming.game3.availability }}" data-gameprice="{{ vote_upcoming.game3.price }}" data-gameinfo="{{ vote_upcoming.game3.info }}" data-gameurl="{{ vote_upcoming.game3.url }}" data-gameimage="{{ vote_upcoming.game3.image }}">Game Info</a>
+                                                </div>
+                                                <div class="col-md-7">
+
+                                                </div>
+                                            </div> <!-- .row -->
+                                        </li> <!-- .list-group-item -->
+
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="radio">
+                                                        <label><input type="radio" name="radiovote{{ vote_upcoming.id }}" value="{{ vote_upcoming.game4.id }}">{{ vote_upcoming.game4.name }}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <a class="btn btn-default displayGameInfo" data-gameid="{{ vote_upcoming.game4.id }}" data-gamename="{{ vote_upcoming.game4.name }}" data-gametype="{{ vote_upcoming.game4.type }}" data-gameavailability="{{ vote_upcoming.game4.availability }}" data-gameprice="{{ vote_upcoming.game4.price }}" data-gameinfo="{{ vote_upcoming.game4.info }}" data-gameurl="{{ vote_upcoming.game4.url }}" data-gameimage="{{ vote_upcoming.game4.image }}">Game Info</a>
+                                                </div>
+                                                <div class="col-md-7">
+
+                                                </div>
+                                            </div> <!-- .row -->
+                                        </li> <!-- .list-group-item -->
+
+                                    </ul> <!-- .list-group -->
+                                    <button type="submit" class="btn btn-default">Vote</button>
+                                </form>
+                            {% endif %}
+
+                        </div> <!-- .panel-body -->
+                    </div> <!-- .panel .panel-primary -->
+                {% endfor %}
+            </div>
+            <div id="passed" class="tab-pane fade">
+                {% for vote_passed in votes_passed %}
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">{{ vote_passed.limitedDate|date('d-M-Y \\a\\t H:i') }}</div>
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="radio disabled">
+                                                <label><input type="radio" name="radiovote{{ vote_passed.id }}" value="{{ vote_passed.game1.id }}" disabled
+                                                            {% if vote_passed.votedGame.id == vote_passed.game1.id %}
+                                                                checked
+                                                            {% endif %}
+                                                    >{{ vote_passed.game1.name }} / {{ vote_passed.votedGame.id }} - {{ vote_passed.game1.id }}</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <a class="btn btn-default displayGameInfo" data-gameid="{{ vote_passed.game1.id }}" data-gamename="{{ vote_passed.game1.name }}" data-gametype="{{ vote_passed.game1.type }}" data-gameavailability="{{ vote_passed.game1.availability }}" data-gameprice="{{ vote_passed.game1.price }}" data-gameinfo="{{ vote_passed.game1.info }}" data-gameurl="{{ vote_passed.game1.url }}" data-gameimage="{{ vote_passed.game1.image }}">Game Info</a>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="{{ vote_passed.percentVotesGame1 }}"
+                                                     aria-valuemin="0" aria-valuemax="100" style="width: {{ vote_passed.percentVotesGame1 }}%">
+                                                    {% if vote_passed.numVotesGame1 > 1 %}
+                                                        {{ vote_passed.numVotesGame1 }} votes / {{ vote_passed.percentVotesGame1 }} %
+                                                    {% else %}
+                                                        {{ vote_passed.numVotesGame1 }} vote / {{ vote_passed.percentVotesGame1 }} %
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <!-- .row -->
+                                </li> <!-- .list-group-item -->
+
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="radio disabled">
+                                                <label><input type="radio" name="radiovote{{ vote_passed.id }}" value="{{ vote_passed.game2.id }}" disabled
+                                                            {% if vote_passed.votedGame.id == vote_passed.game2.id %}
+                                                                checked
+                                                            {% endif %}
+                                                    >{{ vote_passed.game2.name }} / {{ vote_passed.votedGame.id }} - {{ vote_passed.game2.id }}</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <a class="btn btn-default displayGameInfo" data-gameid="{{ vote_passed.game2.id }}" data-gamename="{{ vote_passed.game2.name }}" data-gametype="{{ vote_passed.game2.type }}" data-gameavailability="{{ vote_passed.game2.availability }}" data-gameprice="{{ vote_passed.game2.price }}" data-gameinfo="{{ vote_passed.game2.info }}" data-gameurl="{{ vote_passed.game2.url }}" data-gameimage="{{ vote_passed.game2.image }}">Game Info</a>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="{{ vote_passed.percentVotesGame2 }}"
+                                                     aria-valuemin="0" aria-valuemax="100" style="width: {{ vote_passed.percentVotesGame2 }}%">
+                                                    {% if vote_passed.numVotesGame2 > 1 %}
+                                                        {{ vote_passed.numVotesGame2 }} votes / {{ vote_passed.percentVotesGame2 }} %
+                                                    {% else %}
+                                                        {{ vote_passed.numVotesGame2 }} vote / {{ vote_passed.percentVotesGame2 }} %
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <!-- .row -->
+                                </li> <!-- .list-group-item -->
+
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="radio disabled">
+                                                <label><input type="radio" name="radiovote{{ vote_passed.id }}" value="{{ vote_passed.game3.id }}" disabled
+                                                            {% if vote_passed.votedGame.id == vote_passed.game3.id %}
+                                                                checked
+                                                            {% endif %}
+                                                    >{{ vote_passed.game3.name }} / {{ vote_passed.votedGame.id }} - {{ vote_passed.game3.id }}</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <a class="btn btn-default displayGameInfo" data-gameid="{{ vote_passed.game3.id }}" data-gamename="{{ vote_passed.game3.name }}" data-gametype="{{ vote_passed.game3.type }}" data-gameavailability="{{ vote_passed.game3.availability }}" data-gameprice="{{ vote_passed.game3.price }}" data-gameinfo="{{ vote_passed.game3.info }}" data-gameurl="{{ vote_passed.game3.url }}" data-gameimage="{{ vote_passed.game3.image }}">Game Info</a>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="{{ vote_passed.percentVotesGame3 }}"
+                                                     aria-valuemin="0" aria-valuemax="100" style="width: {{ vote_passed.percentVotesGame3 }}%">
+                                                    {% if vote_passed.numVotesGame3 > 1 %}
+                                                        {{ vote_passed.numVotesGame3 }} votes / {{ vote_passed.percentVotesGame3 }} %
+                                                    {% else %}
+                                                        {{ vote_passed.numVotesGame3 }} vote / {{ vote_passed.percentVotesGame3 }} %
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <!-- .row -->
+                                </li> <!-- .list-group-item -->
+
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="radio disabled">
+                                                <label><input type="radio" name="radiovote{{ vote_passed.id }}" value="{{ vote_passed.game4.id }}" disabled
+                                                            {% if vote_passed.votedGame.id == vote_passed.game4.id %}
+                                                                checked
+                                                            {% endif %}
+                                                    >{{ vote_passed.game4.name }} / {{ vote_passed.votedGame.id }} - {{ vote_passed.game4.id }}</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <a class="btn btn-default displayGameInfo" data-gameid="{{ vote_passed.game4.id }}" data-gamename="{{ vote_passed.game4.name }}" data-gametype="{{ vote_passed.game4.type }}" data-gameavailability="{{ vote_passed.game4.availability }}" data-gameprice="{{ vote_passed.game4.price }}" data-gameinfo="{{ vote_passed.game4.info }}" data-gameurl="{{ vote_passed.game4.url }}" data-gameimage="{{ vote_passed.game4.image }}">Game Info</a>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="{{ vote_passed.percentVotesGame4 }}"
+                                                     aria-valuemin="0" aria-valuemax="100" style="width: {{ vote_passed.percentVotesGame4 }}%">
+                                                    {% if vote_passed.numVotesGame4 > 1 %}
+                                                        {{ vote_passed.numVotesGame4 }} votes / {{ vote_passed.percentVotesGame4 }} %
+                                                    {% else %}
+                                                        {{ vote_passed.numVotesGame4 }} vote / {{ vote_passed.percentVotesGame4 }} %
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <!-- .row -->
+                                </li> <!-- .list-group-item -->
+                            </ul> <!-- .list-group -->
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="gameInfo" tabindex="-1" role="dialog" aria-labelledby="gameInfoLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="gameInfoLabel">Name !</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img id="gameInfoImg">
+                        </div>
+                        <div class="col-md-9">
+                            <h2 id="gameInfoName"></h2>
+                            <div id="gameInfoType"></div>
+                            <div id="gameInfoAvailability"></div>
+                            <div id="gameInfoPrice"></div>
+                            <a id="gameInfoUrl" target="_blank" class="btn btn-default" href=""></a>
+                        </div>
+                    </div> <!-- row -->
+                    <div id="gameInfoInfo"></div>
+                </div> <!-- modal-body -->
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+    {% block scripts %}
+        {{ parent() }}
+
+        <script>
+            var gameId, gameName, gameType, gameAvailability, gamePrice, gameInfo, gameUrl, gameImage;
+            var gameImgDir = '{{ asset('img_games/') }}'
+
+            jQuery(document).ready(function($) {
+                $(".displayGameInfo").click(function() {
+//                window.document.location = $(this).data("href");
+                    gameId = $(this).data("gameid");
+                    gameName = $(this).data("gamename");
+                    gameType = $(this).data("gametype");
+                    gameAvailability = $(this).data("gameavailability");
+                    gamePrice = $(this).data("gameprice");
+                    gameInfo = $(this).data("gameinfo");
+                    gameUrl = $(this).data("gameurl");
+                    gameImage = $(this).data("gameimage");
+                    console.log(gameImage)
+                    $('#gameInfo').modal()
+                });
+            });
+
+            $('#gameInfo').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this)
+//            modal.find('.modal-body').prop('innerHTML', 'Are you sure you want to remove the user ' + gameId + ' ?')
+                modal.find('#gameInfoLabel').prop('innerHTML', gameName)
+                modal.find('#gameInfoName').prop('innerHTML', gameName)
+                if (gameImage != '') {
+                    modal.find('#gameInfoImg').prop('src', gameImgDir+gameImage)
+                    modal.find('#gameInfoImg').prop('style', 'max-width: 200px;')
+                }
+                else {
+                    modal.find('#gameInfoImg').prop('src', '')
+                    modal.find('#gameInfoImg').prop('style', 'display:none;')
+                }
+                modal.find('#gameInfoType').prop('innerHTML', 'Type : '+gameType)
+                modal.find('#gameInfoAvailability').prop('innerHTML', 'Availability : '+gameAvailability)
+                if (gamePrice == '0')
+                    modal.find('#gameInfoPrice').prop('class', 'price price_green')
+                else
+                    modal.find('#gameInfoPrice').prop('class', 'price price_red')
+                modal.find('#gameInfoPrice').prop('innerHTML', 'Price : '+gamePrice)
+                modal.find('#gameInfoInfo').prop('innerHTML', gameInfo)
+                if (gameUrl != '') {
+                    modal.find('#gameInfoUrl').prop('href', gameUrl)
+                    modal.find('#gameInfoUrl').prop('innerHTML', '<i class="fa fa-external-link" aria-hidden="true"></i> '+gameUrl)
+                    modal.find('#gameInfoUrl').prop('style', 'padding-top: 2px; padding-bottom: 2px;')
+                }
+                else {
+                    modal.find('#gameInfoUrl').prop('style', 'display: none;')
+                }
+
+            });
+
+        </script>
+
+    {% endblock %}

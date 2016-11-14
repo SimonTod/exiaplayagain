@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ExiaplayagainBundle\Entity\UsersVotes" table="users_votes">
+    <indexes>
+      <index name="user" columns="user"/>
+      <index name="vote" columns="vote"/>
+      <index name="game" columns="game"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <many-to-one field="user" target-entity="Users">
+      <join-columns>
+        <join-column name="user" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="vote" target-entity="Votes">
+      <join-columns>
+        <join-column name="vote" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="game" target-entity="Games">
+      <join-columns>
+        <join-column name="game" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

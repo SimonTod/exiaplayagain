@@ -165,6 +165,10 @@
                         </li>
                     {% endif %}
 
+                    {% if session.login is defined %}
+                        <li><a href="{{ path('exiaplayagain_votes') }}"><i class="fa fa-th-list" aria-hidden="true"></i> Votes List</a></li>
+                    {% endif %}
+
                 </ul>
 
 

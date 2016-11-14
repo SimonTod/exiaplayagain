@@ -39,7 +39,7 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
     }
 
-    public function adduserAction(request $request)
+    public function adduserAction(Request $request)
     {
         $session = $request->getSession();
 
@@ -358,7 +358,7 @@ class AdminController extends Controller
 
     public function voteslistAction(Request $request)
     {
-        $session = $request->getSession();$session = $request->getSession();
+        $session = $request->getSession();
 
         if ($this->checkAdmin($session)) {
 
@@ -374,6 +374,17 @@ class AdminController extends Controller
                 ->getResult()
             ;
 
+            foreach ($votes_upcoming as $vote_upcoming)
+            {
+                $vote_upcoming->setUserHasVoted($this->hasUserVoted($session, $vote_upcoming));
+
+                if ($vote_upcoming->getUserHasVoted())
+                {
+                    $vote_upcoming->setVotedGame($this->getVotedGame($session, $vote_upcoming));
+                    $this->getVoteStats($vote_upcoming);
+                }
+            }
+
             $votes_passed = $this
                 ->getDoctrine()
                 ->getManager()
@@ -385,6 +396,18 @@ class AdminController extends Controller
                 ->getQuery()
                 ->getResult()
             ;
+
+            foreach ($votes_passed as $vote_passed)
+            {
+                $vote_passed->setUserHasVoted($this->hasUserVoted($session, $vote_passed));
+
+                if ($vote_passed->getUserHasVoted())
+                {
+                    $vote_passed->setVotedGame($this->getVotedGame($session, $vote_passed));
+                }
+
+                $this->getVoteStats($vote_passed);
+            }
 
             return $this->render('ExiaplayagainBundle:Admin:voteslist.html.twig', array(
                 'session' => $session->all(),
@@ -492,5 +515,91 @@ class AdminController extends Controller
             return true;
         else
             return false;
+    }
+
+    private function hasUserVoted($session, $vote)
+    {
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
+
+        $user = $em->getRepository('ExiaplayagainBundle:Users')
+            ->findOneByUsername($session->get('login'));
+
+        $userVote = $em->getRepository('ExiaplayagainBundle:UsersVotes')
+            ->findBy(
+                array(
+                    'user' => $user,
+                    'vote' => $vote
+                )
+            );
+
+        if ($userVote)
+            return true;
+        else
+            return false;
+    }
+
+    private function getVotedGame($session, $vote)
+    {
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
+
+        $user = $em->getRepository('ExiaplayagainBundle:Users')
+            ->findOneByUsername($session->get('login'));
+
+        $votedGame = $em->getRepository('ExiaplayagainBundle:UsersVotes')
+            ->findOneBy(
+                array(
+                    'user' => $user,
+                    'vote' => $vote
+                )
+            )
+            ->getGame();
+
+        return $votedGame;
+    }
+
+    private function getVoteStats($vote)
+    {
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
+
+        $vote->setNumVotesGame1($this->getNumVotes($vote, $vote->getGame1()));
+        $vote->setNumVotesGame2($this->getNumVotes($vote, $vote->getGame2()));
+        $vote->setNumVotesGame3($this->getNumVotes($vote, $vote->getGame3()));
+        $vote->setNumVotesGame4($this->getNumVotes($vote, $vote->getGame4()));
+
+        $voteTotalVotes =
+            $vote->getNumVotesGame1() +
+            $vote->getNumVotesGame2() +
+            $vote->getNumVotesGame3() +
+            $vote->getNumVotesGame4();
+
+        if ($voteTotalVotes != 0)
+        {
+            $vote->setPercentVotesGame1(($vote->getNumVotesGame1()/$voteTotalVotes)*100);
+            $vote->setPercentVotesGame2(($vote->getNumVotesGame2()/$voteTotalVotes)*100);
+            $vote->setPercentVotesGame3(($vote->getNumVotesGame3()/$voteTotalVotes)*100);
+            $vote->setPercentVotesGame4(($vote->getNumVotesGame4()/$voteTotalVotes)*100);
+        }
+    }
+
+    private function getNumVotes($vote, $game)
+    {
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
+
+        $numVotes = count($em->getRepository('ExiaplayagainBundle:UsersVotes')
+            ->findBy(
+                array(
+                    'vote' => $vote,
+                    'game' => $game
+                )));
+
+        return $numVotes;
     }
 }
