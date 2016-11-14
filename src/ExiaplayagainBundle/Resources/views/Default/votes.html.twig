@@ -275,10 +275,10 @@
                                         <div class="col-md-3">
                                             <div class="radio disabled">
                                                 <label><input type="radio" name="radiovote{{ vote_passed.id }}" value="{{ vote_passed.game1.id }}" disabled
-                                                            {% if vote_passed.votedGame.id == vote_passed.game1.id %}
+                                                            {% if vote_passed.votedGame.id is defined and vote_passed.votedGame.id == vote_passed.game1.id %}
                                                                 checked
                                                             {% endif %}
-                                                    >{{ vote_passed.game1.name }} / {{ vote_passed.votedGame.id }} - {{ vote_passed.game1.id }}</label>
+                                                    >{{ vote_passed.game1.name }}</label>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -304,10 +304,10 @@
                                         <div class="col-md-3">
                                             <div class="radio disabled">
                                                 <label><input type="radio" name="radiovote{{ vote_passed.id }}" value="{{ vote_passed.game2.id }}" disabled
-                                                            {% if vote_passed.votedGame.id == vote_passed.game2.id %}
+                                                            {% if vote_passed.votedGame.id is defined and vote_passed.votedGame.id == vote_passed.game2.id %}
                                                                 checked
                                                             {% endif %}
-                                                    >{{ vote_passed.game2.name }} / {{ vote_passed.votedGame.id }} - {{ vote_passed.game2.id }}</label>
+                                                    >{{ vote_passed.game2.name }}</label>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -333,10 +333,10 @@
                                         <div class="col-md-3">
                                             <div class="radio disabled">
                                                 <label><input type="radio" name="radiovote{{ vote_passed.id }}" value="{{ vote_passed.game3.id }}" disabled
-                                                            {% if vote_passed.votedGame.id == vote_passed.game3.id %}
+                                                            {% if vote_passed.votedGame.id is defined and vote_passed.votedGame.id == vote_passed.game3.id %}
                                                                 checked
                                                             {% endif %}
-                                                    >{{ vote_passed.game3.name }} / {{ vote_passed.votedGame.id }} - {{ vote_passed.game3.id }}</label>
+                                                    >{{ vote_passed.game3.name }}</label>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -362,10 +362,10 @@
                                         <div class="col-md-3">
                                             <div class="radio disabled">
                                                 <label><input type="radio" name="radiovote{{ vote_passed.id }}" value="{{ vote_passed.game4.id }}" disabled
-                                                            {% if vote_passed.votedGame.id == vote_passed.game4.id %}
+                                                            {% if vote_passed.votedGame.id is defined and vote_passed.votedGame.id == vote_passed.game4.id %}
                                                                 checked
                                                             {% endif %}
-                                                    >{{ vote_passed.game4.name }} / {{ vote_passed.votedGame.id }} - {{ vote_passed.game4.id }}</label>
+                                                    >{{ vote_passed.game4.name }}</label>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
