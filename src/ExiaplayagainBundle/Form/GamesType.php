@@ -28,7 +28,7 @@ class GamesType extends AbstractType
                 'choices' => array(
                     'Pay' => 'Pay',
                     'Free To Play' => 'Free To Play',
-                    'Crack Dispo' => 'Crack Dispo'
+                    'We got it' => 'We got it'
                 ),
                 'placeholder' => 'Availability'
             ))
