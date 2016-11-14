@@ -104,10 +104,20 @@ class AdminController extends Controller
                     ->getRepository('ExiaplayagainBundle:Users')
                     ->findOneByUsername($username);
 
+                $userVotes = $em
+                    ->getRepository('ExiaplayagainBundle:UsersVotes')
+                    ->findBy(
+                        array('user' => $user));
+
+                foreach($userVotes as $userVote)
+                {
+                    $em->remove($userVote);
+                }
+
                 $em->remove($user);
                 $em->flush();
 
-                $session->getFlashBag()->add('notice', "Utilisateur ".$username." supprimé avec succès");
+                $session->getFlashBag()->add('notice', "Utilisateur ".$username." supprimé avec succès. Attention, si l'utilisateur avait effectué des votes, les statistiques des votes ont été modifiés");
                 return $this->redirect($this->generateUrl('exiaplayagain_userslist'));
             }
             else if ($username == $session->get('login'))
@@ -346,11 +356,30 @@ class AdminController extends Controller
 
             $gamename = $game->getName();
 
-            $em->remove($game);
-            $em->flush();
+            $votesAssociated = $em
+                ->getRepository('ExiaplayagainBundle:Votes')
+                ->createQueryBuilder('v')
+                ->where('v.game1 = :game')
+                ->orWhere('v.game2 = :game')
+                ->orWhere('v.game3 = :game')
+                ->orWhere('v.game4 = :game')
+                ->setParameter('game', $game)
+                ->getQuery()
+                ->getResult();
 
-            $session->getFlashBag()->add('notice', "The game ".$gamename." was successfully deleted");
-            return $this->redirect($this->generateUrl('exiaplayagain_gameslist'));
+            if ($votesAssociated)
+            {
+                $session->getFlashBag()->add('error', "The game ".$gamename." has votes associated to it. You should think again before removing it. If you still want to remove the game, please remove associated votes before");
+                return $this->redirect($this->generateUrl('exiaplayagain_gameslist'));
+            }
+            else
+            {
+                $em->remove($game);
+                $em->flush();
+
+                $session->getFlashBag()->add('notice', "The game ".$gamename." was successfully deleted");
+                return $this->redirect($this->generateUrl('exiaplayagain_gameslist'));
+            }
         }
         else
             return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
@@ -465,6 +494,16 @@ class AdminController extends Controller
                 ->getRepository('ExiaplayagainBundle:Votes')
                 ->findOneBy(
                     array('id' => $voteid));
+
+            $usersVotes = $em
+                ->getRepository('ExiaplayagainBundle:UsersVotes')
+                ->findBy(
+                    array('vote' => $vote));
+
+            foreach ($usersVotes as $userVotes)
+            {
+                $em->remove($userVotes);
+            }
 
             $em->remove($vote);
             $em->flush();
