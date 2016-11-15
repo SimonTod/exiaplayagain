@@ -616,18 +616,18 @@ class AdminController extends Controller
         $vote->setNumVotesGame3($this->getNumVotes($vote, $vote->getGame3()));
         $vote->setNumVotesGame4($this->getNumVotes($vote, $vote->getGame4()));
 
-        $voteTotalVotes =
+        $vote->setTotalUsersVotes(
             $vote->getNumVotesGame1() +
             $vote->getNumVotesGame2() +
             $vote->getNumVotesGame3() +
-            $vote->getNumVotesGame4();
+            $vote->getNumVotesGame4());
 
-        if ($voteTotalVotes != 0)
+        if ($vote->getTotalUsersVotes() != 0)
         {
-            $vote->setPercentVotesGame1(round(($vote->getNumVotesGame1()/$voteTotalVotes)*100));
-            $vote->setPercentVotesGame2(round(($vote->getNumVotesGame2()/$voteTotalVotes)*100));
-            $vote->setPercentVotesGame3(round(($vote->getNumVotesGame3()/$voteTotalVotes)*100));
-            $vote->setPercentVotesGame4(round(($vote->getNumVotesGame4()/$voteTotalVotes)*100));
+            $vote->setPercentVotesGame1(round(($vote->getNumVotesGame1()/$vote->getTotalUsersVotes())*100));
+            $vote->setPercentVotesGame2(round(($vote->getNumVotesGame2()/$vote->getTotalUsersVotes())*100));
+            $vote->setPercentVotesGame3(round(($vote->getNumVotesGame3()/$vote->getTotalUsersVotes())*100));
+            $vote->setPercentVotesGame4(round(($vote->getNumVotesGame4()/$vote->getTotalUsersVotes())*100));
         }
     }
 

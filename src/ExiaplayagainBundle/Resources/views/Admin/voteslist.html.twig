@@ -37,7 +37,20 @@
             <div id="upcoming" class="tab-pane fade in active">
                 {% for vote_upcoming in votes_upcoming %}
                     <div class="panel panel-primary">
-                        <div class="panel-heading">{{ vote_upcoming.limitedDate|date('d-M-Y \\a\\t H:i') }}</div>
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    {{ vote_upcoming.limitedDate|date('d-M-Y \\a\\t H:i') }}
+                                </div>
+                                <div class="col-md-2">
+                                    {% if vote_upcoming.totalUsersVotes > 1 %}
+                                        {{ vote_upcoming.totalUsersVotes }} votes
+                                    {% else %}
+                                        {{ vote_upcoming.totalUsersVotes }} vote
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
                         <div class="panel-body">
                             <ul class="list-group">
                                 <li class="list-group-item">
@@ -127,7 +140,20 @@
             <div id="passed" class="tab-pane fade">
                 {% for vote_passed in votes_passed %}
                     <div class="panel panel-primary">
-                        <div class="panel-heading">{{ vote_passed.limitedDate|date('d-M-Y \\a\\t H:i') }}</div>
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    {{ vote_passed.limitedDate|date('d-M-Y \\a\\t H:i') }}
+                                </div>
+                                <div class="col-md-2">
+                                    {% if vote_passed.totalUsersVotes > 1 %}
+                                        {{ vote_passed.totalUsersVotes }} votes
+                                    {% else %}
+                                        {{ vote_passed.totalUsersVotes }} vote
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
                         <div class="panel-body">
                             <ul class="list-group">
                                 <li class="list-group-item">

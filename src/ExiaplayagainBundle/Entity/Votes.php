@@ -334,4 +334,18 @@ class Votes
 
         return $this;
     }
+
+    private $totalUsersVotes;
+
+    public function getTotalUsersVotes()
+    {
+        return $this->totalUsersVotes;
+    }
+
+    public function setTotalUsersVotes($totalUsersVotes)
+    {
+        $this->totalUsersVotes = $totalUsersVotes;
+
+        return $this;
+    }
 }
