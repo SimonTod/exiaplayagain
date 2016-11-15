@@ -141,6 +141,29 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
     }
 
+    public function gamesAction(Request $request)
+    {
+        $session = $request->getSession();$session = $request->getSession();
+
+        if ($this->checkConnected($session)) {
+            $games = $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository('ExiaplayagainBundle:Games')
+                ->findBy(
+                    array(),    //where
+                    array('name' => 'ASC') //order
+                );
+
+            return $this->render('ExiaplayagainBundle:Default:games.html.twig', array(
+                'session' => $session->all(),
+                'games' => $games,
+            ));
+        }
+        else
+            return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+    }
+
     private function checkConnected($session)
     {
 //        if(!$session->has('login') or $session->get('login') == '')

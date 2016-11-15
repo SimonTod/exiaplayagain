@@ -65,3 +65,7 @@ exiaplayagain_votes:
 exiaplayagain_dovote:
     path:     /dovote/{voteid}
     defaults: { _controller: ExiaplayagainBundle:Default:dovote }
+
+exiaplayagain_games:
+    path:     /games
+    defaults: { _controller: ExiaplayagainBundle:Default:games }
