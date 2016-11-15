@@ -244,10 +244,10 @@ class DefaultController extends Controller
 
         if ($voteTotalVotes != 0)
         {
-            $vote->setPercentVotesGame1(($vote->getNumVotesGame1()/$voteTotalVotes)*100);
-            $vote->setPercentVotesGame2(($vote->getNumVotesGame2()/$voteTotalVotes)*100);
-            $vote->setPercentVotesGame3(($vote->getNumVotesGame3()/$voteTotalVotes)*100);
-            $vote->setPercentVotesGame4(($vote->getNumVotesGame4()/$voteTotalVotes)*100);
+            $vote->setPercentVotesGame1(round(($vote->getNumVotesGame1()/$voteTotalVotes)*100));
+            $vote->setPercentVotesGame2(round(($vote->getNumVotesGame2()/$voteTotalVotes)*100));
+            $vote->setPercentVotesGame3(round(($vote->getNumVotesGame3()/$voteTotalVotes)*100));
+            $vote->setPercentVotesGame4(round(($vote->getNumVotesGame4()/$voteTotalVotes)*100));
         }
     }
 
