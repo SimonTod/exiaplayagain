@@ -50,7 +50,6 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th>Type</th>
                 <th>Availability</th>
@@ -61,7 +60,6 @@
             <tbody>
             {% for game in games %}
                 <tr class="clickable-row" data-gameid="{{ game.id }}" data-gamename="{{ game.name }}" data-gametype="{{ game.type }}" data-gameavailability="{{ game.availability }}" data-gameprice="{{ game.price }}" data-gameinfo="{{ game.info }}" data-gameurl="{{ game.url }}" data-gameimage="{{ game.image }}">
-                    <td>{{ game.id }}</td>
                     <td>{{ game.name }}</td>
                     <td>{{ game.type }}</td>
                     <td>{{ game.availability }}</td>
