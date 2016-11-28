@@ -4,6 +4,15 @@
     {{ parent() }}
 {% endblock %}
 
+{% block head %}
+    <style>
+        #img-modal, #img-votes {
+            padding: 10px;
+            max-width: 600px;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
 
     <div class="fluid-row" id="header">
@@ -13,6 +22,56 @@
     </div>
 
     <!--  -->
-    <p>Bienvenue sur Exia Play Again!</p>
+    <h5>Bienvenue sur Exia Play Again!</h5>
+
+    <p>
+        Notre but est d'améliorer l'organisation de l'association Exia Play Again situé à Pau. <br>
+        Qu'est que l'association Exia Play Again ? <br>
+        Nous planifions simplement une LAN tous les jeudis après-midi pour les étudiants de l'établissements motivés et intéressés. <br>
+        L'objectif du site exiaplayagain.tk est de permettre aux joueurs concernés de voter parmis 4 jeux proposés pour le jeudi suivant. <br>
+    </p>
+
+    <h3>Fonctionnalités</h3>
+
+    <p>
+        Nous utilisisons les fonctionnalités fournies par BootStrap pour afficher les informations sur les jeux que nous avons à disposition.
+        <img id="img-modal" src="{{ asset('img/index-modal-game.png') }}" alt="index-modal-game.png">
+    </p>
+
+    <p>
+        Les votes des différents utilisateurs sont gérés par l'ORM Doctrine de Symfony. Ils sont également bloqués à 1 vote par utilisateur
+        <img id="img-votes" src="{{ asset('img/index-votes.png') }}" alt="index-votes.png">
+    </p>
+
+    <h3>TODO</h3>
+
+    <ul>
+        <li>[<i class="fa fa-check"></i>] games database</li>
+        <li>[<i class="fa fa-check"></i>] admin possibility ti add games</li>
+        <li>[<i class="fa fa-check"></i>] esthetic game info view</li>
+        <li>[<i class="fa fa-check"></i>] admin possibility to modify / remove game</li>
+        <li>[<i class="fa fa-times"></i>] user / games relation</li>
+        <li>[<i class="fa fa-check"></i>] votes database</li>
+        <li>[<i class="fa fa-check"></i>] admin possibility to create / delete a vote</li>
+        <li>[<i class="fa fa-check"></i>] users possibility to see a vote</li>
+        <li>[<i class="fa fa-check"></i>] users possibility vote for a vote</li>
+        <li>[<i class="fa fa-check"></i>] display other informations like stats and others</li>
+        <li>[<i class="fa fa-times"></i>] SSL Let's Encrypt Certificate (HTTPS)</li>
+    </ul>
+
+    <h3>Contacts</h3>
+
+    Si vous avez de questions techniques concernant le site exiaplayagain.tk, adressez vous à l'équipe dev :
+    <ul>
+        <li>Simon Todeschini : simon.todeschini@viacesi.fr</li>
+        <li>Guillaume Nicolas : guillaume.nicolas@viacesi.fr</li>
+    </ul>
+
+    Pour toutes autres questions (organisation, devenir membre, création de compte, etc...), <br>
+    adressez vous au président de l'association :
+    <ul>
+        <li>Kévin Siry : kevin.siry@viacesi.fr</li>
+    </ul>
+
 
 {% endblock %}
