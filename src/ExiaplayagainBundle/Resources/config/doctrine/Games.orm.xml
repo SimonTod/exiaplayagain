@@ -11,5 +11,6 @@
     <field name="info" type="text" column="info" length="65535" nullable="true"/>
     <field name="url" type="string" column="url" length="255" nullable="true"/>
     <field name="image" type="string" column="image" length="255" nullable="true"/>
+    <field name="lastPlayed" type="date" column="last_played" nullable="true"/>
   </entity>
 </doctrine-mapping>

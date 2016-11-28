@@ -2,6 +2,7 @@
 
 namespace ExiaplayagainBundle\Form;
 
+//use Doctrine\DBAL\Types\DateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class GamesType extends AbstractType
 {
@@ -36,6 +38,7 @@ class GamesType extends AbstractType
             ->add('info', TextareaType::class, array('required' => false))
             ->add('url', UrlType::class, array('required' => false))
             ->add('image', FileType::class, array('required' => false, 'data_class' => null))
+            ->add('lastPlayed', DateType::class, array('required' => false))
             ->add('save', SubmitType::class, array('label' => 'Submit'))
         ;
 

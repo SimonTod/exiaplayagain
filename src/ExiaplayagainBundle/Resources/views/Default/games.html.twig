@@ -59,7 +59,7 @@
             </thead>
             <tbody>
             {% for game in games %}
-                <tr class="clickable-row" data-gameid="{{ game.id }}" data-gamename="{{ game.name }}" data-gametype="{{ game.type }}" data-gameavailability="{{ game.availability }}" data-gameprice="{{ game.price }}" data-gameinfo="{{ game.info }}" data-gameurl="{{ game.url }}" data-gameimage="{{ game.image }}">
+                <tr class="clickable-row" data-gameid="{{ game.id }}" data-gamename="{{ game.name }}" data-gametype="{{ game.type }}" data-gameavailability="{{ game.availability }}" data-gameprice="{{ game.price }}" data-gameinfo="{{ game.info }}" data-gameurl="{{ game.url }}" data-gameimage="{{ game.image }}" {% if game.lastPlayed %}data-gamelastplayed="{{ game.lastPlayed|date('d-M-Y') }}"{% else %}data-gamelastplayed=""{% endif %}>
                     <td>{{ game.name }}</td>
                     <td>{{ game.type }}</td>
                     <td>{{ game.availability }}</td>
@@ -98,6 +98,7 @@
                             <div id="gameInfoType"></div>
                             <div id="gameInfoAvailability"></div>
                             <div id="gameInfoPrice"></div>
+                            <div id="gameInfoLastPlayed"></div>
                             <a id="gameInfoUrl" target="_blank" class="btn btn-default" href=""></a>
                         </div>
                     </div> <!-- row -->
@@ -116,7 +117,7 @@
     {{ parent() }}
 
     <script>
-        var gameId, gameName, gameType, gameAvailability, gamePrice, gameInfo, gameUrl, gameImage;
+        var gameId, gameName, gameType, gameAvailability, gamePrice, gameInfo, gameUrl, gameImage, gameLastPlayed;
         var gameImgDir = '{{ asset('img_games/') }}'
 
         jQuery(document).ready(function($) {
@@ -130,7 +131,8 @@
                 gameInfo = $(this).data("gameinfo");
                 gameUrl = $(this).data("gameurl");
                 gameImage = $(this).data("gameimage");
-                console.log(gameImage)
+                gameLastPlayed = $(this).data("gamelastplayed");
+//                console.log(gameImage)
                 $('#gameInfo').modal()
             });
         });
@@ -166,6 +168,12 @@
             }
             else {
                 modal.find('#gameInfoUrl').prop('style', 'display: none;')
+            }
+            if (gameLastPlayed != '') {
+                modal.find('#gameInfoLastPlayed').prop('innerHTML', 'Last Played : '+gameLastPlayed)
+            }
+            else {
+                modal.find('#gameInfoLastPlayed').prop('innerHTML', 'Last Played : NA')
             }
             var route = "{{ path('exiaplayagain_editgame', { 'gameid': "PLACEHOLDER" }) }}";
 

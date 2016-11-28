@@ -62,6 +62,13 @@ class Games
     private $image;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="last_played", type="date", nullable=true)
+     */
+    private $lastPlayed;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -231,6 +238,29 @@ class Games
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Set lastPlayed
+     *
+     * @param \DateTime $lastPlayed
+     * @return Games
+     */
+    public function setLastPlayed($lastPlayed)
+    {
+        $this->lastPlayed = $lastPlayed;
+
+        return $this;
+    }
+
+    /**
+     * Get lastPlayed
+     *
+     * @return \DateTime 
+     */
+    public function getLastPlayed()
+    {
+        return $this->lastPlayed;
     }
 
     /**

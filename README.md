@@ -9,10 +9,10 @@ A Symfony project created on October 21, 2016, 3:01 pm.
     - name
     - type
     - pay / free / crack
-    - [ ] last time played
     - info
     - url
     - image
+    - last time played
 - [x] admin possibility to add games
 - [x] esthetic game info view
 - [x] admin possibility to modify / remove game
@@ -46,9 +46,48 @@ sudo mkdir app/cache app/logs
 sudo chmod 777 app/cache app/logs
 ```
 
-####SQL FOR DATABASE USERS_VOTES
+####SQL CREATE ALL TABLES
 
 ```sql
+CREATE TABLE `exiaplayagain`.`games` 
+( 
+    `id` INT NOT NULL AUTO_INCREMENT , 
+    `name` VARCHAR(255) NOT NULL ,
+    `type` VARCHAR(255) NOT NULL ,
+    `availability` VARCHAR(255) NOT NULL ,
+    `price` FLOAT ,
+    `info` TEXT ,
+    `url` VARCHAR(255) ,
+    `image` VARCHAR(255) ,
+    `last_played` DATE ,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+
+CREATE TABLE `exiaplayagain`.`users` 
+( 
+    `id` INT NOT NULL AUTO_INCREMENT , 
+    `username` VARCHAR(255) NOT NULL ,
+    `name` VARCHAR(255) NOT NULL ,
+    `password` VARCHAR(255) NOT NULL ,
+    `is_admin` tinyint(1) NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+
+CREATE TABLE `exiaplayagain`.`votes` 
+( 
+    `id` INT NOT NULL AUTO_INCREMENT , 
+    `limited_date` DATETIME NOT NULL ,
+    `game_1` INT NOT NULL ,
+    `game_2` INT NOT NULL ,
+    `game_3` INT NOT NULL ,
+    `game_4` INT NOT NULL ,
+    PRIMARY KEY (`id`) ,
+    FOREIGN KEY (game_1) REFERENCES games(id),
+    FOREIGN KEY (game_2) REFERENCES games(id),
+    FOREIGN KEY (game_3) REFERENCES games(id),
+    FOREIGN KEY (game_4) REFERENCES games(id)
+) ENGINE = InnoDB;
+
 CREATE TABLE `exiaplayagain`.`users_votes` 
 ( 
     `id` INT NOT NULL AUTO_INCREMENT , 
