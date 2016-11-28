@@ -27,6 +27,8 @@ A Symfony project created on October 21, 2016, 3:01 pm.
 - [x] users possibility to see a vote
 - [x] users possibility vote for a vote
 - [x] display other informations like stats and others
+- [x] index page
+- [ ] SSL Let's Encrypt Certificate (HTTPS)
 
 ####GENERATE ENTITIES FROM EXISTING DATABASE
 
