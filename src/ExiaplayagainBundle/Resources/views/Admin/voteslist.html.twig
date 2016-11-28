@@ -43,10 +43,12 @@
                                     {{ vote_upcoming.limitedDate|date('d-M-Y \\a\\t H:i') }}
                                 </div>
                                 <div class="col-md-2">
-                                    {% if vote_upcoming.totalUsersVotes > 1 %}
-                                        {{ vote_upcoming.totalUsersVotes }} votes
-                                    {% else %}
-                                        {{ vote_upcoming.totalUsersVotes }} vote
+                                    {% if vote_upcoming.userHasVoted %}
+                                        {% if vote_upcoming.totalUsersVotes > 1 %}
+                                            {{ vote_upcoming.totalUsersVotes }} votes
+                                        {% else %}
+                                            {{ vote_upcoming.totalUsersVotes }} vote
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                             </div>
