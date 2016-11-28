@@ -18,6 +18,8 @@ class AdminController extends Controller
 {
     private $superAdminUsers = array('simon', 'kevinsiry');
 
+    private $megaAdminUsers = array('simon');
+
     public function userslistAction(Request $request)
     {
         $session = $request->getSession();
@@ -415,6 +417,11 @@ class AdminController extends Controller
                 if ($vote_upcoming->getUserHasVoted())
                 {
                     $vote_upcoming->setVotedGame($this->getVotedGame($session, $vote_upcoming));
+                    $this->getVoteStats($vote_upcoming);
+                }
+
+                if (in_array($session->get('login'), $this->megaAdminUsers))
+                {
                     $this->getVoteStats($vote_upcoming);
                 }
             }
