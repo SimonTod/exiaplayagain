@@ -483,11 +483,17 @@ class AdminController extends Controller
                 return $this->redirect($this->generateUrl('exiaplayagain_voteslist'));
 
             }
-            else
+            else {
+                $neverPlayedGames = $this->listNeverPlayedGames();
+                $playedGames = $this->listPlayedGames();
+
                 return $this->render('ExiaplayagainBundle:Admin:addvote.html.twig', array(
                     'session' => $session->all(),
                     'form' => $form->createView(),
+                    'neverPlayedGames' => $neverPlayedGames,
+                    'playedGames' => $playedGames,
                 ));
+            }
         }
         else
             return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
@@ -652,5 +658,34 @@ class AdminController extends Controller
                 )));
 
         return $numVotes;
+    }
+
+    private function listNeverPlayedGames(){
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
+
+        $neverPlayedGames = $em->getRepository('ExiaplayagainBundle:Games')
+            ->findBy(
+                array('lastPlayed' => null), //where
+                array('name' => 'ASC') //order
+            );
+
+        return $neverPlayedGames;
+    }
+
+    private function listPlayedGames(){
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
+
+        $playedGames = $em->getRepository('ExiaplayagainBundle:Games')
+            ->createQueryBuilder('q')
+            ->where('q.lastPlayed IS NOT NULL')
+            ->orderBy('q.lastPlayed', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $playedGames;
     }
 }

@@ -26,8 +26,34 @@
 
     </div>
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
+    <div class="row">
+        <div class="col-md-8">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+        <div class="col-md-4">
+            {% if neverPlayedGames is not empty %}
+                <h3>Never Played Games</h3>
+                <ul>
+                    {% for neverPlayedGame in neverPlayedGames %}
+                        <li>
+                            {{ neverPlayedGame.name }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if playedGames is not empty %}
+                <h3>Played Games</h3>
+                <ul>
+                    {% for playedGame in playedGames %}
+                        <li>
+                            {{ playedGame.name }} ({{ playedGame.lastPlayed|date('d-M-Y') }})
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
 
 {% endblock %}
