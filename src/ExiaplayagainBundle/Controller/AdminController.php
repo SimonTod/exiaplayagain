@@ -190,7 +190,7 @@ class AdminController extends Controller
 
     public function gameslistAction(Request $request)
     {
-        $session = $request->getSession();$session = $request->getSession();
+        $session = $request->getSession();
 
         if ($this->checkAdmin($session)) {
             $games = $this
@@ -688,4 +688,5 @@ class AdminController extends Controller
 
         return $playedGames;
     }
+
 }

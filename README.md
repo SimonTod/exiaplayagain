@@ -29,6 +29,9 @@ A Symfony project created on October 21, 2016, 3:01 pm.
 - [x] display other informations like stats and others
 - [x] index page
 - [x] SSL Let's Encrypt Certificate (HTTPS)
+- [ ] better user management using FOSUserBundle
+
+https://openclassrooms.com/courses/developpez-votre-site-web-avec-le-framework-symfony/securite-et-gestion-des-utilisateurs-1#/id/r-3624667
 
 ####GENERATE ENTITIES FROM EXISTING DATABASE
 

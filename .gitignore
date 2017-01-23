@@ -12,3 +12,5 @@
 /composer.phar
 *~
 .idea/workspace.xml
+/web/img_games/*
+.idea/*
