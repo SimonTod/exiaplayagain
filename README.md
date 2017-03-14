@@ -53,7 +53,7 @@ sudo git pull origin master
 sudo php app/console cache:clear --env=prod
 sudo rm -rf app/cache app/logs
 sudo mkdir app/cache app/logs
-sudo chmod 777 app/cache app/logs
+sudo chmod -R 777 app/cache app/logs
 ```
 
 ####SQL CREATE ALL TABLES
@@ -119,7 +119,7 @@ CREATE TABLE `exiaplayagain`.`discord_tokens`
     `user` INT NOT NULL , 
     `token` INT NOT NULL , 
     `type` INT NOT NULL , 
-    `validity` DATE NOT NULL ,
+    `validity` DATETIME NOT NULL ,
     PRIMARY KEY (`id`),
     FOREIGN KEY (user) REFERENCES users(id)
 ) ENGINE = InnoDB;
