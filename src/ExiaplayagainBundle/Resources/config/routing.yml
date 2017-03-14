@@ -69,3 +69,19 @@ exiaplayagain_dovote:
 exiaplayagain_games:
     path:     /games
     defaults: { _controller: ExiaplayagainBundle:Default:games }
+
+exiaplayagain_discordbot_home:
+    path:    /discordbot/home
+    defaults: { _controller: ExiaplayagainBundle:DiscordBot:home }
+
+exiaplayagain_discordbot_sendmessage:
+    path:    /discordbot/sendmessage
+    defaults: { _controller: ExiaplayagainBundle:DiscordBot:sendmessage }
+
+exiaplayagain_discord_associate:
+    path:    /discordbot/associate
+    defaults: { _controller: ExiaplayagainBundle:DiscordBot:associate }
+
+exiaplayagain_discord_verify:
+    path:    /discordbot/verify/{token}
+    defaults: { _controller: ExiaplayagainBundle:DiscordBot:verify }

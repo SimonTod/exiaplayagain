@@ -97,27 +97,15 @@ class AccountController extends Controller
                         return $this->redirectToRoute('exiaplayagain_homepage');
                     }
                     else
-                    {
                         $session->getFlashBag()->add('error', 'Veuillez entrer 2 fois le même nouveau mot de passe');
-                        return $this->render('ExiaplayagainBundle:Account:myaccount.html.twig', array(
-                            'session' => $session->all(),
-                        ));
-                    }
                 }
                 else
-                {
                     $session->getFlashBag()->add('error', "Votre ancien mot de passe n'est pas correct");
-                    return $this->render('ExiaplayagainBundle:Account:myaccount.html.twig', array(
-                        'session' => $session->all(),
-                    ));
-                }
-
             }
-            else {
-                return $this->render('ExiaplayagainBundle:Account:myaccount.html.twig', array(
-                    'session' => $session->all(),
-                ));
-            }
+            return $this->render('ExiaplayagainBundle:Account:myaccount.html.twig', array(
+                'session' => $session->all(),
+                'user' => $user
+            ));
         }
         else {
             return $this->redirect($this->generateUrl('exiaplayagain_homepage'));

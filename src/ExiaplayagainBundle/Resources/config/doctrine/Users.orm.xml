@@ -11,5 +11,8 @@
     <field name="name" type="string" column="name" length="255" nullable="false"/>
     <field name="password" type="string" column="password" length="255" nullable="false"/>
     <field name="isAdmin" type="boolean" column="is_admin" nullable="false"/>
+    <field name="discordUsername" type="string" column="discord_username" length="255" nullable="true"/>
+    <field name="discordId" type="bigint" column="discord_id" nullable="true"/>
+    <field name="discordIsVerified" type="boolean" column="discord_is_verified" nullable="false"/>
   </entity>
 </doctrine-mapping>

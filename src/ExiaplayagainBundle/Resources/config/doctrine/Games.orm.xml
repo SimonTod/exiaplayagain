@@ -7,7 +7,7 @@
     <field name="name" type="string" column="name" length="255" nullable="false"/>
     <field name="type" type="string" column="type" length="255" nullable="false"/>
     <field name="availability" type="string" column="availability" length="255" nullable="false"/>
-    <field name="price" type="float" column="price" precision="10" scale="0" nullable="true"/>
+    <field name="price" type="float" column="price" precision="10" scale="0" nullable="false"/>
     <field name="info" type="text" column="info" length="65535" nullable="true"/>
     <field name="url" type="string" column="url" length="255" nullable="true"/>
     <field name="image" type="string" column="image" length="255" nullable="true"/>

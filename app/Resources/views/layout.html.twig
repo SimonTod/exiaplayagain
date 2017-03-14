@@ -141,7 +141,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a href="{{ path('exiaplayagain_homepage') }}" class="pull-left">
-                    <img style="width: 44px; margin: 5px;" src="{{ asset('img/logo_stream.png') }}" onerror="this.src='{{ asset('img/logo_stream.png') }}'" onmouseover="this.src='{{ asset('img/logo_stream_whitened.png') }}'"; onmouseout="this.src='{{ asset('img/logo_stream.png') }}'"; alt="exiaplayagain" id="exiaplayagain-logo">
+                    <img style="width: 44px; margin: 5px;" src="{{ asset('img/logo_stream.png') }}" onerror="this.src='{{ asset('img/logo_stream.png') }}'" onmouseover="this.src='{{ asset('img/logo_stream_whitened.png') }}'" onmouseout="this.src='{{ asset('img/logo_stream.png') }}'" alt="exiaplayagain" id="exiaplayagain-logo">
                 </a>
             </div>
 
@@ -163,6 +163,8 @@
                                 <li><a href="{{ path('exiaplayagain_voteslist') }}"><i class="fa fa-th-list" aria-hidden="true"></i> Votes list</a></li>
                             </ul>
                         </li>
+
+                        <li><a href="{{ path('exiaplayagain_discordbot_home') }}"><img style="width: 24px;" src="{{ asset('img_logos/discord.svg') }}" onerror="this.src='{{ asset('img_logos/discord.svg') }}'" onmouseover="this.src='{{ asset('img_logos/discord_whitened.svg') }}'" onmouseout="this.src='{{ asset('img_logos/discord.svg') }}'" alt="discord" id="discord-logo"></a></li>
                     {% endif %}
 
                     {% if session.login is defined %}

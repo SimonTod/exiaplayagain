@@ -41,6 +41,27 @@ class Users
     private $isAdmin;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="discord_username", type="string", length=255, nullable=true)
+     */
+    private $discordUsername;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="discord_id", type="bigint", nullable=true)
+     */
+    private $discordId;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="discord_is_verified", type="boolean", nullable=false)
+     */
+    private $discordIsVerified;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -141,6 +162,75 @@ class Users
     public function getIsAdmin()
     {
         return $this->isAdmin;
+    }
+
+    /**
+     * Set discordUsername
+     *
+     * @param string $discordUsername
+     * @return Users
+     */
+    public function setDiscordUsername($discordUsername)
+    {
+        $this->discordUsername = $discordUsername;
+
+        return $this;
+    }
+
+    /**
+     * Get discordUsername
+     *
+     * @return string 
+     */
+    public function getDiscordUsername()
+    {
+        return $this->discordUsername;
+    }
+
+    /**
+     * Set discordId
+     *
+     * @param integer $discordId
+     * @return Users
+     */
+    public function setDiscordId($discordId)
+    {
+        $this->discordId = $discordId;
+
+        return $this;
+    }
+
+    /**
+     * Get discordId
+     *
+     * @return integer 
+     */
+    public function getDiscordId()
+    {
+        return $this->discordId;
+    }
+
+    /**
+     * Set discordIsVerified
+     *
+     * @param boolean $discordIsVerified
+     * @return Users
+     */
+    public function setDiscordIsVerified($discordIsVerified)
+    {
+        $this->discordIsVerified = $discordIsVerified;
+
+        return $this;
+    }
+
+    /**
+     * Get discordIsVerified
+     *
+     * @return boolean 
+     */
+    public function getDiscordIsVerified()
+    {
+        return $this->discordIsVerified;
     }
 
     /**

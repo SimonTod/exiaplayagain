@@ -8,6 +8,26 @@
 
     <h1>Mon Compte</h1>
 
+    {% for message in app.session.flashbag.get('discordbot_error') %}
+        <div class="flashbag">
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                {{ dump(message) }}
+            </div>
+        </div>
+    {% endfor %}
+
+    {% for message in app.session.flashbag.get('discordbot_notice') %}
+        <div class="flashbag">
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <span class="glyphicon glyphicon-ok-sign"></span>
+                {{ dump(message) }}
+            </div>
+        </div>
+    {% endfor %}
+
     <hr>
 
     <h3><i class="fa fa-key" aria-hidden="true"></i>  Changer de mot de passe</h3>
@@ -28,7 +48,7 @@
             <div class="col-lg-6">
                 <div class="input-group">
                     <span class="input-group-addon">new</span>
-                    <input type="password" class="form-control" placeholder="Nouveau mot de passe" name="new_password_1"required>
+                    <input type="password" class="form-control" placeholder="Nouveau mot de passe" name="new_password_1" required>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -39,9 +59,46 @@
             </div>
         </div>
 
-        <hr>
+        <br>
 
         <button type="submit" class="btn btn-default">Valider</button>
     </form>
 
+    <hr>
+
+    <h3><img src="{{ asset('img_logos/discord_original.svg') }}"> Associer à Discord</h3>
+
+    <form method="post" action="{{ path('exiaplayagain_discord_associate') }}">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-id-card-o"></i></span>
+                    {% if user.discordIsVerified %}
+                        <input id="discord-username" type="text" onchange="checkRegexUsername()" class="form-control" placeholder="username#1234" name="username" value="{{ user.discordUsername }}" required>
+                    {% else %}
+                        <input id="discord-username" type="text" onchange="checkRegexUsername()" class="form-control" placeholder="username#1234" name="username" required>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <button id="submit-button" type="submit" class="btn btn-default" disabled>Valider</button>
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        var checkRegexUsername = function() {
+            var input = document.getElementById("discord-username");
+            var button = document.getElementById("submit-button");
+            if (input.value.match(/^[^#]+#[0-9]{4}$/g))
+                button.disabled = false;
+            else
+                button.disabled = true;
+        }
+    </script>
 {% endblock %}

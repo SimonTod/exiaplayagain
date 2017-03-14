@@ -33,6 +33,11 @@ A Symfony project created on October 21, 2016, 3:01 pm.
 
 https://openclassrooms.com/courses/developpez-votre-site-web-avec-le-framework-symfony/securite-et-gestion-des-utilisateurs-1#/id/r-3624667
 
+####DEV INFO
+#####Discord Tokens Type :
+- 0 -> verify
+- 1 -> login
+
 ####GENERATE ENTITIES FROM EXISTING DATABASE
 
 ```bash
@@ -75,6 +80,9 @@ CREATE TABLE `exiaplayagain`.`users`
     `name` VARCHAR(255) NOT NULL ,
     `password` VARCHAR(255) NOT NULL ,
     `is_admin` tinyint(1) NOT NULL DEFAULT 0,
+    `discord_username` VARCHAR(255) NULL DEFAULT NULL,
+    `discord_id` INT NULL DEFAULT NULL,
+    `discord_is_verified` tinyint(1) NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
@@ -103,6 +111,17 @@ CREATE TABLE `exiaplayagain`.`users_votes`
     FOREIGN KEY (user) REFERENCES users(id),
     FOREIGN KEY (vote) REFERENCES votes(id),
     FOREIGN KEY (game) REFERENCES games(id)
+) ENGINE = InnoDB;
+
+CREATE TABLE `exiaplayagain`.`discord_tokens`
+(
+    `id` INT NOT NULL AUTO_INCREMENT , 
+    `user` INT NOT NULL , 
+    `token` INT NOT NULL , 
+    `type` INT NOT NULL , 
+    `validity` DATE NOT NULL ,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (user) REFERENCES users(id)
 ) ENGINE = InnoDB;
 ```
 

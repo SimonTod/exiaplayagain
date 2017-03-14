@@ -36,7 +36,7 @@ class Games
     /**
      * @var float
      *
-     * @ORM\Column(name="price", type="float", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="price", type="float", precision=10, scale=0, nullable=false)
      */
     private $price;
 

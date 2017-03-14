@@ -1,0 +1,65 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }}  - Discord Bot
+{% endblock %}
+
+{% block body %}
+
+    <div class="fluid-row" id="header">
+
+        <h1 class="title toc-ignore">Discord Bot <img src="{{ asset('img_logos/discord_original.svg') }}"></h1>
+
+    </div>
+
+    <h3>send message</h3>
+
+    <form method="post" action="{{ path('exiaplayagain_discordbot_sendmessage') }}">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-file-text"></i></span>
+                    <input type="text" class="form-control" placeholder="Content" name="content" required>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-id-card-o"></i></span>
+                    <input type="text" class="form-control" placeholder="Channel ID" name="channel_id" required>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <button type="submit" class="btn btn-default">Valider</button>
+    </form>
+
+    <hr>
+
+    {% for message in app.session.flashbag.get('discordbot_error') %}
+        <div class="flashbag">
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <span class="glyphicon glyphicon-remove-sign"></span> <strong>ERROR</strong>
+                {#<pre>#}
+                    {{ dump(message) }}
+                {#</pre>#}
+            </div>
+        </div>
+    {% endfor %}
+
+    {% for message in app.session.flashbag.get('discordbot_notice') %}
+        <div class="flashbag">
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <span class="glyphicon glyphicon-ok-sign"></span> <strong>SUCCESS</strong>
+                {#<pre>#}
+                    {{ dump(message) }}
+                {#</pre>#}
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
+
