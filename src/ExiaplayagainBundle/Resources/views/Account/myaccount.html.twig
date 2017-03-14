@@ -67,6 +67,13 @@
     <hr>
 
     <h3><img src="{{ asset('img_logos/discord_original.svg') }}"> Associer à Discord</h3>
+    <ul class="fa-ul">
+    {% if user.discordIsVerified %}
+        <li style="color: green;"><i class="fa-li fa fa-check-square"></i>Compte associé</li>
+    {% else %}
+        <li style="color: red;"><i class="fa-li fa fa-times-squate"></i>Compte non associé</li>
+    {% endif %}
+    </ul>
 
     <form method="post" action="{{ path('exiaplayagain_discord_associate') }}">
         <div class="row">

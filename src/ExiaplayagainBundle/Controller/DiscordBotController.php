@@ -105,6 +105,7 @@ class DiscordBotController extends Controller
                 if ($bdd_token->getValidity() > new \DateTime()) {
                     $user->setDiscordIsVerified(true);
                     $em->persist($user);
+                    $em->remove($bdd_token);
                     $em->flush();
                     $session->getFlashBag()->add('notice', "Votre compte Discord est associé à votre compte ExiaPlayAgain. Vous pouvez maintenant vous connecter en utiliser des liens générés. D'autres fonctionnalités sont en développement.");
                 } else
