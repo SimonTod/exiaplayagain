@@ -14,7 +14,7 @@ class DiscordTokens
 {
     public function __construct()
     {
-        $this->validity = new \DateTime();
+        $this->validity = new \DateTime("+5 minutes");
         $this->token = rand(0, 2000000000);
     }
 

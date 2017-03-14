@@ -90,9 +90,9 @@ exiaplayagain_discordbot_sendconnectionlink:
     path:    /discordbot/sendconnectionlink
     defaults: { _controller: ExiaplayagainBundle:DiscordBot:sendconnectionlink }
 
-exiaplayagain_discordbot_login:
-    path:    /discordbot/login/{token}
-    defaults: { _controller: ExiaplayagainBundle:DiscordBot:login }
+exiaplayagain_discordbot_dologin:
+    path:    /discordbot/dologin/{token}
+    defaults: { _controller: ExiaplayagainBundle:DiscordBot:dologin }
 
 exiaplayagain_discordbot_sendusername:
     path:    /discordbot/sendusername
