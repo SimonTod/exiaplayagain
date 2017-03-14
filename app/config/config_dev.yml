@@ -1,11 +1,6 @@
 imports:
     - { resource: config.yml }
 
-# Twig Configuration
-twig:
-    debug:            "%kernel.debug%"
-    strict_variables: "%kernel.debug%"
-
 framework:
     router:
         resource: "%kernel.root_dir%/config/routing_dev.yml"
