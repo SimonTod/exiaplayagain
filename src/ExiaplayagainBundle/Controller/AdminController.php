@@ -61,6 +61,7 @@ class AdminController extends Controller
                 $user->setName($_POST['name']);
                 $user->setPassword(password_hash($_POST['password1'], PASSWORD_DEFAULT));
                 $user->setIsAdmin(false);
+                $user->setDiscordIsVerified(false);
 
                 $em->persist($user);
 

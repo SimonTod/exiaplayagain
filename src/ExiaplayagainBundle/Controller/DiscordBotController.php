@@ -87,10 +87,10 @@ class DiscordBotController extends Controller
     public function verifyAction(Request $request, $token) {
         $session = $request->getSession();
         if ($session->has('login')) {
-            $em = $em = $this
+            $em = $this
                 ->getDoctrine()
                 ->getManager();
-            $user = $user = $em
+            $user = $em
                 ->getRepository('ExiaplayagainBundle:Users')
                 ->findOneByUsername($session->get('login'));
             $bdd_token = $em
@@ -113,6 +113,97 @@ class DiscordBotController extends Controller
             } else
                 $session->getFlashBag()->add('error', "Le lien n'est pas valide, veuillez renseigner à nouveau votre username Discord pour recevoir un nouveau lien");
             return $this->redirect($this->generateUrl('exiaplayagain_myaccount'));
+        } else
+            return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+    }
+
+    public function sendconnectionlinkAction(Request $request) {
+        $session = $request->getSession();
+        if (!$session->has('login')) {
+            if ($request->isMethod('POST')) {
+                $em = $this
+                    ->getDoctrine()
+                    ->getManager();
+                $user = $em
+                    ->getRepository('ExiaplayagainBundle:Users')
+                    ->findOneByUsername($_POST['login']);
+                if ($user != null) {
+                    if ($user->getDiscordIsVerified() == true) {
+                        $response = $this->createLoginToken($user);
+
+                        if ($response['success'] == true)
+                            $session->getFlashBag()->add('notice', $response['message']);
+                        else
+                            $session->getFlashBag()->add('error', $response['message']);
+                    } else
+                        $session->getFlashBag()->add('error', "Cet utilisateur n'a pas encore ajouté et validé son compte Discord");
+                } else
+                    $session->getFlashBag()->add('error', "Cet utilisateur n'existe pas");
+            }
+            return $this->redirect($this->generateUrl('exiaplayagain_login'));
+        } else
+            return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+    }
+
+    public function loginAction(Request $request, $token) {
+        $session = $request->getSession();
+        if (!$session->has('login')) {
+            $em = $this
+                ->getDoctrine()
+                ->getManager();
+            $bdd_token = $em
+                ->getRepository('ExiaplayagainBundle:DiscordTokens')
+                ->findOneBy(array(
+                    "type" => 1,
+                    "token" => $token),    //where
+                    array('validity' => 'DESC')//order
+                );
+            if ($bdd_token != null) {
+                if ($bdd_token->getValidity() > new \DateTime()) {
+                    $user = $bdd_token->getUser();
+                    $session->set('login', $user->getUsername());
+                    if ($user->getIsAdmin())
+                    {
+                        $session->set('is_admin', true);
+                    }
+                    $this->deleteUserTokens($user);
+                    $session->getFlashBag()->add('notice', "Utilisateur connecté");
+                    return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+                } else
+                    $session->getFlashBag()->add('error', "Le lien est expiré, veuillez renseigner à nouveau votre username pour recevoir un nouveau lien");
+            } else
+                $session->getFlashBag()->add('error', "Le lien n'est pas valide, veuillez renseigner à nouveau votre username pour recevoir un nouveau lien");
+            return $this->redirect($this->generateUrl('exiaplayagain_login'));
+        } else
+            return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+    }
+
+    public function sendusernameAction(Request $request) {
+        $session = $request->getSession();
+        if (!$session->has('login')) {
+            if ($request->isMethod('POST')) {
+                $em = $this
+                    ->getDoctrine()
+                    ->getManager();
+                $users = $em
+                    ->getRepository('ExiaplayagainBundle:Users')
+                    ->findBy(array("discordUsername" => $_POST['discord-username']));
+                if (!count($users) == 0) {
+                    if (count($users) == 1) {
+                        $message = "Ton username ExiaPlayAgain est **" . $users[0]->getUsername() . "**";
+                    } else {
+                        $message = "Plusieurs username ExiaPlayAgain sont associés à ce username Discord : **" . $users[0]->getUsername() . "**";
+                        for ($i = 1; $i < count($users) - 1; $i++) {
+                            $message = $message. ", **" . $users[$i]->getUsername() . "**";
+                        }
+                        $message = $message. " et **" . $users[count($users)-1]->getUsername() . "**";
+                    }
+                    $this->sendPrivateMessage($users[0]->getDiscordId(), $message);
+                    $session->getFlashBag()->add('notice', "Un message vous a été envoyé sur Discord");
+                } else
+                    $session->getFlashBag()->add('error', "Aucun utilisateur n'est associé à ce compte Discord");
+            }
+            return $this->redirect($this->generateUrl('exiaplayagain_login'));
         } else
             return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
     }
@@ -154,9 +245,9 @@ class DiscordBotController extends Controller
         return json_decode($response, true);
     }
 
-    private function createPrivateConvo($userId) {
+    private function createPrivateConvo($userDiscordId) {
         $fields = array(
-            'recipient_id' => $userId
+            'recipient_id' => $userDiscordId
         );
         $json_fields = json_encode($fields);
 
@@ -200,6 +291,30 @@ class DiscordBotController extends Controller
             return null;
     }
 
+    private function sendPrivateMessage($userDiscordId, $content) {
+        $convo = $this->createPrivateConvo($userDiscordId);
+        if ((array_key_exists("code", $convo) && array_key_exists('message', $convo)) || (!array_key_exists("id", $convo))) {
+            return array(
+                "success" => false,
+                "message" => "Erreur lors de la création d'une conversation privée avec l'utilisateur"
+            );
+        } else {
+            $channel_id = $convo['id'];
+            $message = $this->postMessage($content, $channel_id);
+
+            if (array_key_exists("code", $message) && array_key_exists('message', $message)) {
+                return array(
+                    "success" => false,
+                    "message" => "Erreur lors de l'envoi du message à l'utilisateur"
+                );
+            } else {
+                return array(
+                    "success" => true
+                );
+            }
+        }
+    }
+
     private function createVerificationToken($user) {
         $em = $this
             ->getDoctrine()
@@ -212,28 +327,43 @@ class DiscordBotController extends Controller
         $em->persist($discord_token);
         $em->flush();
 
-        $convo = $this->createPrivateConvo($user->getDiscordId());
-        if ((array_key_exists("code", $convo) && array_key_exists('message', $convo)) || (!array_key_exists("id", $convo))) {
-            return array(
-                "success" => false,
-                "message" => "Erreur lors de la création d'une conversation privée avec l'utilisateur"
-            );
-        } else {
-            $channel_id = $convo['id'];
-            $message = $this->postMessage("https://exiaplayagain.tk/discordbot/verify/".$discord_token->getToken(), $channel_id);
+        $message = $this->sendPrivateMessage($user->getDiscordId(), "https://exiaplayagain.tk/discordbot/verify/".$discord_token->getToken());
+        if ($message['success'] == true)
+            $message['message'] = "Un lien de vérification a été envoyé à votre compte Discord. Il est valable 5 minutes. Veuillez l'ouvrir pour finaliser la procédure";
+        return $message;
+    }
 
-            if (array_key_exists("code", $message) && array_key_exists('message', $message)) {
-                return array(
-                    "success" => false,
-                    "message" => "Erreur lors de l'envoi du message à l'utilisateur"
-                );
-            } else {
-                return array(
-                    "success" => true,
-                    "message" => "Un lien de vérification a été envoyé à votre compte Discord. Il est valable 5 minutes. Veuillez l'ouvrir pour finaliser la procédure"
-                );
-            }
+    private function createLoginToken($user) {
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
+        $discord_token = new DiscordTokens();
+        $discord_token->setToken(rand(0, 2000000000));
+        $discord_token->setType(1);
+        $discord_token->setUser($user);
+        $discord_token->setValidity(new \Datetime("+5 minutes"));
+        $em->persist($discord_token);
+        $em->flush();
+
+        $message = $this->sendPrivateMessage($user->getDiscordId(), "https://exiaplayagain.tk/discordbot/login/".$discord_token->getToken());
+        if ($message['success'] == true)
+            $message['message'] = "Un lien de connexion a été envoyé à votre compte Discord. Il est valable 5 minutes. Veuillez l'ouvrir pour vous connecter";
+        return $message;
+    }
+
+    private function deleteUserTokens($user) {
+        $em = $this
+            ->getDoctrine()
+            ->getManager();
+        $tokens = $em
+            ->getRepository('ExiaplayagainBundle:DiscordTokens')
+            ->findBy(array("user" => $user),    //where
+                array('validity' => 'DESC')//order
+            );
+        foreach ($tokens as $token) {
+            $em->remove($token);
         }
+        $em->flush();
     }
 
 }

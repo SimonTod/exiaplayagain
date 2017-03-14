@@ -4,9 +4,20 @@
     {{ parent() }} - Sign In
 {% endblock %}
 
+{% block head %}
+    <style>
+        #logo-discord {
+            height: 30px;
+            padding-right: 3px;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
 
     <h1>Connexion</h1>
+
+    <h3>Avec mot de passe</h3>
 
     <form method="post" action="{{ path('exiaplayagain_login') }}">
         <div class="row">
@@ -24,9 +35,57 @@
             </div>
         </div>
 
-        <hr>
+        <br>
 
         <button type="submit" class="btn btn-default">Valider</button>
     </form>
 
+    <hr>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h3>Avec un lien</h3>
+
+            <form method="post" action="{{ path('exiaplayagain_discordbot_sendconnectionlink') }}">
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                    <input type="text" class="form-control" placeholder="Nom d'utilisateur" name="login" required>
+                </div>
+
+                <br>
+
+                <button type="submit" class="btn btn-default"><img id="logo-discord" src="{{ asset('img_logos/discord_original.svg') }}"> Recevoir un lien</button>
+            </form>
+        </div>
+
+        <div class="col-lg-6">
+            <h3>J'ai oublié mon username</h3>
+
+            <form method="post" action="{{ path('exiaplayagain_discordbot_sendusername') }}">
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                    <input id="discord-username" onchange="checkRegexUsername()" type="text" class="form-control" placeholder="username#1234" name="discord-username" required>
+                </div>
+
+                <br>
+
+                <button id="submit-button" type="submit" class="btn btn-default" disabled><img id="logo-discord" src="{{ asset('img_logos/discord_original.svg') }}"> Recevoir mon username</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        var checkRegexUsername = function() {
+            var input = document.getElementById("discord-username");
+            var button = document.getElementById("submit-button");
+            if (input.value.match(/^[^#]+#[0-9]{4}$/g))
+                button.disabled = false;
+            else
+                button.disabled = true;
+        }
+    </script>
 {% endblock %}

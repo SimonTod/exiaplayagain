@@ -78,10 +78,22 @@ exiaplayagain_discordbot_sendmessage:
     path:    /discordbot/sendmessage
     defaults: { _controller: ExiaplayagainBundle:DiscordBot:sendmessage }
 
-exiaplayagain_discord_associate:
+exiaplayagain_discordbot_associate:
     path:    /discordbot/associate
     defaults: { _controller: ExiaplayagainBundle:DiscordBot:associate }
 
-exiaplayagain_discord_verify:
+exiaplayagain_discordbot_verify:
     path:    /discordbot/verify/{token}
     defaults: { _controller: ExiaplayagainBundle:DiscordBot:verify }
+
+exiaplayagain_discordbot_sendconnectionlink:
+    path:    /discordbot/sendconnectionlink
+    defaults: { _controller: ExiaplayagainBundle:DiscordBot:sendconnectionlink }
+
+exiaplayagain_discordbot_login:
+    path:    /discordbot/login/{token}
+    defaults: { _controller: ExiaplayagainBundle:DiscordBot:login }
+
+exiaplayagain_discordbot_sendusername:
+    path:    /discordbot/sendusername
+    defaults: { _controller: ExiaplayagainBundle:DiscordBot:sendusername }
