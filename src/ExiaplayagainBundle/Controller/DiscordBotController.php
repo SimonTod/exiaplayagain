@@ -320,10 +320,8 @@ class DiscordBotController extends Controller
             ->getDoctrine()
             ->getManager();
         $discord_token = new DiscordTokens();
-        $discord_token->setToken(rand(0, 2000000000));
         $discord_token->setType(0);
         $discord_token->setUser($user);
-        $discord_token->setValidity(new \Datetime("+5 minutes"));
         $em->persist($discord_token);
         $em->flush();
 
@@ -338,10 +336,8 @@ class DiscordBotController extends Controller
             ->getDoctrine()
             ->getManager();
         $discord_token = new DiscordTokens();
-        $discord_token->setToken(rand(0, 2000000000));
         $discord_token->setType(1);
         $discord_token->setUser($user);
-        $discord_token->setValidity(new \Datetime("+5 minutes"));
         $em->persist($discord_token);
         $em->flush();
 
