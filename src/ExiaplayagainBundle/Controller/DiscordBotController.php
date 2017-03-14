@@ -102,7 +102,7 @@ class DiscordBotController extends Controller
                     array('validity' => 'DESC')//order
                 );
             if ($bdd_token != null) {
-                if ($bdd_token->getValidity() > new \DateTime()) {
+                if ($bdd_token->getValidity() > new \DateTime("-5 minutes")) {
                     $user->setDiscordIsVerified(true);
                     $em->persist($user);
                     $em->remove($bdd_token);
@@ -159,7 +159,7 @@ class DiscordBotController extends Controller
                     array('validity' => 'DESC')//order
                 );
             if ($bdd_token != null) {
-                if ($bdd_token->getValidity() > new \DateTime()) {
+                if ($bdd_token->getValidity() > new \DateTime("-5 minutes")) {
                     $user = $bdd_token->getUser();
                     $session->set('login', $user->getUsername());
                     if ($user->getIsAdmin())
