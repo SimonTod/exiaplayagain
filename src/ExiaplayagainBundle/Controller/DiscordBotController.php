@@ -145,7 +145,7 @@ class DiscordBotController extends Controller
             return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
     }
 
-    public function dologinAction(Request $request, $token) {
+    public function loginAction(Request $request, $token) {
         $session = $request->getSession();
         if (!$session->has('login')) {
             $em = $this
@@ -341,7 +341,7 @@ class DiscordBotController extends Controller
         $em->persist($discord_token);
         $em->flush();
 
-        $message = $this->sendPrivateMessage($user->getDiscordId(), "https://exiaplayagain.tk/discordbot/dologin/".$discord_token->getToken());
+        $message = $this->sendPrivateMessage($user->getDiscordId(), "https://exiaplayagain.tk/discordbot/login/".$discord_token->getToken());
         if ($message['success'] == true)
             $message['message'] = "Un lien de connexion a été envoyé à votre compte Discord. Il est valable 5 minutes. Veuillez l'ouvrir pour vous connecter";
         return $message;
