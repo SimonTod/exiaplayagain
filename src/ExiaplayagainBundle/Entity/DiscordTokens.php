@@ -40,6 +40,13 @@ class DiscordTokens
     private $validity;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="ip", type="string", length=255, nullable=false)
+     */
+    private $ip;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -127,6 +134,29 @@ class DiscordTokens
     public function getValidity()
     {
         return $this->validity;
+    }
+
+    /**
+     * Set ip
+     *
+     * @param string $ip
+     * @return DiscordTokens
+     */
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
+
+        return $this;
+    }
+
+    /**
+     * Get ip
+     *
+     * @return string 
+     */
+    public function getIp()
+    {
+        return $this->ip;
     }
 
     /**

@@ -10,6 +10,7 @@
     <field name="token" type="integer" column="token" nullable="false"/>
     <field name="type" type="integer" column="type" nullable="false"/>
     <field name="validity" type="datetime" column="validity" nullable="false"/>
+    <field name="ip" type="string" column="ip" length="255" nullable="false"/>
     <many-to-one field="user" target-entity="Users">
       <join-columns>
         <join-column name="user" referenced-column-name="id"/>

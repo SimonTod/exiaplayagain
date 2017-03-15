@@ -119,10 +119,26 @@ CREATE TABLE `exiaplayagain`.`discord_tokens`
     `user` INT NOT NULL , 
     `token` INT NOT NULL , 
     `type` INT NOT NULL , 
-    `validity` DATETIME NOT NULL ,
+    `validity` DATETIME DEFAULT NULL ,
+    `ip` VARCHAR(255) NOT NULL ,
     PRIMARY KEY (`id`),
     FOREIGN KEY (user) REFERENCES users(id)
 ) ENGINE = InnoDB;
+
+DELIMITER $$
+CREATE TRIGGER `settime` BEFORE INSERT ON `discord_tokens` FOR EACH ROW SET NEW.`validity` = TIMESTAMPADD(MINUTE,5,NOW())
+$$
+DELIMITER ;
+```
+
+#####ADD IN ENTITY DISCORDTOKENS.PHP
+
+```php
+public function __construct()
+{
+    $this->validity = null;
+    $this->token = rand(0, 2000000000);
+}
 ```
 
 #####ADD IN ENTITY VOTES.PHP

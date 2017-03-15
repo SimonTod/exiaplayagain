@@ -70,7 +70,7 @@ class DiscordBotController extends Controller
                     $user->setDiscordIsVerified(false);
                     $em->persist($user);
                     $em->flush();
-                    $response = $this->createVerificationToken($user);
+                    $response = $this->createVerificationToken($user, $request->getClientIp());
 
                     if ($response['success'] == true)
                         $session->getFlashBag()->add('notice', $response['message']);
@@ -102,14 +102,17 @@ class DiscordBotController extends Controller
                     array('validity' => 'DESC')//order
                 );
             if ($bdd_token != null) {
-                if ($bdd_token->getValidity() > new \DateTime()) {
-                    $user->setDiscordIsVerified(true);
-                    $em->persist($user);
-                    $em->remove($bdd_token);
-                    $em->flush();
-                    $session->getFlashBag()->add('notice', "Votre compte Discord est associé à votre compte ExiaPlayAgain. Vous pouvez maintenant vous connecter en utiliser des liens générés. D'autres fonctionnalités sont en développement.");
+                if ($bdd_token->getIp() == $request->getClientIp()) {
+                    if ($bdd_token->getValidity() > new \DateTime()) {
+                        $user->setDiscordIsVerified(true);
+                        $em->persist($user);
+                        $em->remove($bdd_token);
+                        $em->flush();
+                        $session->getFlashBag()->add('notice', "Votre compte Discord est associé à votre compte ExiaPlayAgain. Vous pouvez maintenant vous connecter en utiliser des liens générés. D'autres fonctionnalités sont en développement.");
+                    } else
+                        $session->getFlashBag()->add('error', "Le lien est expiré, veuillez renseigner à nouveau votre username Discord pour recevoir un nouveau lien");
                 } else
-                    $session->getFlashBag()->add('error', "Le lien est expiré, veuillez renseigner à nouveau votre username Discord pour recevoir un nouveau lien");
+                    $session->getFlashBag()->add('error', "Vous tentez de finaliser cette action depuis un poste différent de celui depuis lequel a été fait la demande");
             } else
                 $session->getFlashBag()->add('error', "Le lien n'est pas valide, veuillez renseigner à nouveau votre username Discord pour recevoir un nouveau lien");
             return $this->redirect($this->generateUrl('exiaplayagain_myaccount'));
@@ -129,7 +132,7 @@ class DiscordBotController extends Controller
                     ->findOneByUsername($_POST['login']);
                 if ($user != null) {
                     if ($user->getDiscordIsVerified() == true) {
-                        $response = $this->createLoginToken($user);
+                        $response = $this->createLoginToken($user, $request->getClientIp());
 
                         if ($response['success'] == true)
                             $session->getFlashBag()->add('notice', $response['message']);
@@ -159,18 +162,22 @@ class DiscordBotController extends Controller
                     array('validity' => 'DESC')//order
                 );
             if ($bdd_token != null) {
-                if ($bdd_token->getValidity() > new \DateTime()) {
-                    $user = $bdd_token->getUser();
-                    $session->set('login', $user->getUsername());
-                    if ($user->getIsAdmin())
-                    {
-                        $session->set('is_admin', true);
-                    }
-                    $this->deleteUserTokens($user);
-                    $session->getFlashBag()->add('notice', "Utilisateur connecté");
-                    return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+                if ($bdd_token->getIp() == $request->getClientIp())
+                {
+                    if ($bdd_token->getValidity() > new \DateTime()) {
+                        $user = $bdd_token->getUser();
+                        $session->set('login', $user->getUsername());
+                        if ($user->getIsAdmin())
+                        {
+                            $session->set('is_admin', true);
+                        }
+                        $this->deleteUserTokens($user);
+                        $session->getFlashBag()->add('notice', "Utilisateur connecté");
+                        return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
+                    } else
+                        $session->getFlashBag()->add('error', "Le lien est expiré, veuillez renseigner à nouveau votre username pour recevoir un nouveau lien");
                 } else
-                    $session->getFlashBag()->add('error', "Le lien est expiré, veuillez renseigner à nouveau votre username pour recevoir un nouveau lien");
+                    $session->getFlashBag()->add('error', "Vous tentez de vous connecter sur un poste différent de celui depuis lequel a été fait la demande");
             } else
                 $session->getFlashBag()->add('error', "Le lien n'est pas valide, veuillez renseigner à nouveau votre username pour recevoir un nouveau lien");
             return $this->redirect($this->generateUrl('exiaplayagain_login'));
@@ -315,13 +322,14 @@ class DiscordBotController extends Controller
         }
     }
 
-    private function createVerificationToken($user) {
+    private function createVerificationToken($user, $ip) {
         $em = $this
             ->getDoctrine()
             ->getManager();
         $discord_token = new DiscordTokens();
         $discord_token->setType(0);
         $discord_token->setUser($user);
+        $discord_token->setIp($ip);
         $em->persist($discord_token);
         $em->flush();
 
@@ -331,13 +339,14 @@ class DiscordBotController extends Controller
         return $message;
     }
 
-    private function createLoginToken($user) {
+    private function createLoginToken($user, $ip) {
         $em = $this
             ->getDoctrine()
             ->getManager();
         $discord_token = new DiscordTokens();
         $discord_token->setType(1);
         $discord_token->setUser($user);
+        $discord_token->setIp($ip);
         $em->persist($discord_token);
         $em->flush();
 
