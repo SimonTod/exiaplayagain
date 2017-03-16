@@ -16,8 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 class DiscordBotController extends Controller
 {
     private $DISCORD_API = "https://discordapp.com/api";
-    private $DISCORD_BOTTOKEN = 'MjkwNzcyNTY2MzUwNjI2ODM2.C6hHFQ.Fi6eGTUpQt8lZ78Z8qTEShKAXwk';
-    private $DISCORD_GUILDID = '220860793451708417';
+    private $DISCORD_BOTTOKEN = 'MjkwNzcyNTY2MzUwNjI2ODM2.C6hHFQ.Fi6eGTUpQt8lZ78Z8qTEShKAXwk'; // bot-exiaplayagain
+//    private $DISCORD_GUILDID = '220860793451708417'; // eXia PAU
+    private $DISCORD_GUILDID = '260074341033705474'; // Forains
     private $DISCORD_ASSOCHANNELID = "245481987974889472";
 
     public function homeAction(Request $request) {
@@ -33,10 +34,11 @@ class DiscordBotController extends Controller
 
     public function sendmessageAction(Request $request) {
         $session = $request->getSession();
+        $discordBot = $this->get("exiaplayagain.discordbot");
 
         if ($this->checkAdmin($session)) {
             if ($request->isMethod('POST')) {
-                $data = $this->postMessage($_POST['content'], $_POST['channel_id']);
+                $data = $discordBot->postMessage($_POST['content'], $_POST['channel_id']);
                 if (array_key_exists("code", $data) && array_key_exists('message', $data))
                     $session->getFlashBag()->add('discordbot_error', $data);
                 else
@@ -187,6 +189,7 @@ class DiscordBotController extends Controller
 
     public function sendusernameAction(Request $request) {
         $session = $request->getSession();
+        $discordBot = $this->get("exiaplayagain.discordbot");
         if (!$session->has('login')) {
             if ($request->isMethod('POST')) {
                 $em = $this
@@ -205,7 +208,7 @@ class DiscordBotController extends Controller
                         }
                         $message = $message. " et **" . $users[count($users)-1]->getUsername() . "**";
                     }
-                    $this->sendPrivateMessage($users[0]->getDiscordId(), $message);
+                    $discordBot->sendPrivateMessage($users[0]->getDiscordId(), $message);
                     $session->getFlashBag()->add('notice', "Un message vous a été envoyé sur Discord");
                 } else
                     $session->getFlashBag()->add('error', "Aucun utilisateur n'est associé à ce compte Discord");
@@ -230,47 +233,6 @@ class DiscordBotController extends Controller
             return true;
         else
             return false;
-    }
-
-    private function postMessage($content, $channelId) {
-        $fields = array(
-            'content' => $content
-        );
-        $json_fields = json_encode($fields);
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->DISCORD_API. "/channels/". $channelId ."/messages");
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-type: application/json',
-            'Authorization: Bot '.$this->DISCORD_BOTTOKEN,
-            'Content-Length: ' . strlen($json_fields)));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $json_fields);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $response = curl_exec($ch);
-        return json_decode($response, true);
-    }
-
-    private function createPrivateConvo($userDiscordId) {
-        $fields = array(
-            'recipient_id' => $userDiscordId
-        );
-        $json_fields = json_encode($fields);
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->DISCORD_API. "/users/@me/channels");
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-type: application/json',
-            'Authorization: Bot '.$this->DISCORD_BOTTOKEN,
-            'Content-Length: ' . strlen($json_fields)));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $json_fields);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $response = curl_exec($ch);
-        $data = json_decode($response, true);
-        return $data;
     }
 
     private function getUsersList($guildId) {
@@ -298,31 +260,8 @@ class DiscordBotController extends Controller
             return null;
     }
 
-    private function sendPrivateMessage($userDiscordId, $content) {
-        $convo = $this->createPrivateConvo($userDiscordId);
-        if ((array_key_exists("code", $convo) && array_key_exists('message', $convo)) || (!array_key_exists("id", $convo))) {
-            return array(
-                "success" => false,
-                "message" => "Erreur lors de la création d'une conversation privée avec l'utilisateur"
-            );
-        } else {
-            $channel_id = $convo['id'];
-            $message = $this->postMessage($content, $channel_id);
-
-            if (array_key_exists("code", $message) && array_key_exists('message', $message)) {
-                return array(
-                    "success" => false,
-                    "message" => "Erreur lors de l'envoi du message à l'utilisateur"
-                );
-            } else {
-                return array(
-                    "success" => true
-                );
-            }
-        }
-    }
-
     private function createVerificationToken($user, $ip) {
+        $discordBot = $this->get("exiaplayagain.discordbot");
         $em = $this
             ->getDoctrine()
             ->getManager();
@@ -333,13 +272,14 @@ class DiscordBotController extends Controller
         $em->persist($discord_token);
         $em->flush();
 
-        $message = $this->sendPrivateMessage($user->getDiscordId(), "https://exiaplayagain.tk/discordbot/verify/".$discord_token->getToken());
+        $message = $discordBot->sendPrivateMessage($user->getDiscordId(), "https://exiaplayagain.tk/discordbot/verify/".$discord_token->getToken());
         if ($message['success'] == true)
             $message['message'] = "Un lien de vérification a été envoyé à votre compte Discord. Il est valable 5 minutes. Veuillez l'ouvrir pour finaliser la procédure";
         return $message;
     }
 
     private function createLoginToken($user, $ip) {
+        $discordBot = $this->get("exiaplayagain.discordbot");
         $em = $this
             ->getDoctrine()
             ->getManager();
@@ -350,7 +290,7 @@ class DiscordBotController extends Controller
         $em->persist($discord_token);
         $em->flush();
 
-        $message = $this->sendPrivateMessage($user->getDiscordId(), "https://exiaplayagain.tk/discordbot/login/".$discord_token->getToken());
+        $message = $discordBot->sendPrivateMessage($user->getDiscordId(), "https://exiaplayagain.tk/discordbot/login/".$discord_token->getToken());
         if ($message['success'] == true)
             $message['message'] = "Un lien de connexion a été envoyé à votre compte Discord. Il est valable 5 minutes. Veuillez l'ouvrir pour vous connecter";
         return $message;
