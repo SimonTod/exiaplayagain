@@ -51,13 +51,14 @@ class DiscordBotController extends Controller
 
     public function associateAction(Request $request) {
         $session = $request->getSession();
+        $discordBot = $this->get("exiaplayagain.discordbot");
 
         if ($session->has('login')) {
             if ($request->isMethod('POST')) {
-                $usersList = $this->getUsersList($this->DISCORD_GUILDID);
+                $usersList = $discordBot->getUsersList($this->DISCORD_GUILDID);
                 $username = explode("#", $_POST['username'])[0];
                 $userDiscriminator = explode("#", $_POST['username'])[1];
-                $userId = $this->getUserId($usersList, $username, $userDiscriminator);
+                $userId = $discordBot->getUserId($usersList, $username, $userDiscriminator);
 //                $session->getFlashBag()->add('discordbot_notice', $userId);
                 if ($userId != null) {
                     $em = $this
@@ -72,7 +73,7 @@ class DiscordBotController extends Controller
                     $user->setDiscordIsVerified(false);
                     $em->persist($user);
                     $em->flush();
-                    $response = $this->createVerificationToken($user, $request->getClientIp());
+                    $response = $discordBot->createVerificationToken($user, $request->getClientIp());
 
                     if ($response['success'] == true)
                         $session->getFlashBag()->add('notice', $response['message']);
@@ -124,6 +125,7 @@ class DiscordBotController extends Controller
 
     public function sendconnectionlinkAction(Request $request) {
         $session = $request->getSession();
+        $discordBot = $this->get("exiaplayagain.discordbot");
         if (!$session->has('login')) {
             if ($request->isMethod('POST')) {
                 $em = $this
@@ -134,7 +136,7 @@ class DiscordBotController extends Controller
                     ->findOneByUsername($_POST['login']);
                 if ($user != null) {
                     if ($user->getDiscordIsVerified() == true) {
-                        $response = $this->createLoginToken($user, $request->getClientIp());
+                        $response = $discordBot->createLoginToken($user, $request->getClientIp());
 
                         if ($response['success'] == true)
                             $session->getFlashBag()->add('notice', $response['message']);
@@ -152,6 +154,7 @@ class DiscordBotController extends Controller
 
     public function loginAction(Request $request, $token) {
         $session = $request->getSession();
+        $discordBot = $this->get("exiaplayagain.discordbot");
         if (!$session->has('login')) {
             $em = $this
                 ->getDoctrine()
@@ -173,7 +176,7 @@ class DiscordBotController extends Controller
                         {
                             $session->set('is_admin', true);
                         }
-                        $this->deleteUserTokens($user);
+                        $discordBot->deleteUserTokens($user);
                         $session->getFlashBag()->add('notice', "Utilisateur connecté");
                         return $this->redirect($this->generateUrl('exiaplayagain_homepage'));
                     } else
@@ -233,82 +236,6 @@ class DiscordBotController extends Controller
             return true;
         else
             return false;
-    }
-
-    private function getUsersList($guildId) {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->DISCORD_API. "/guilds/" . $guildId . "/members?limit=1000");
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-type: application/json',
-            'Authorization: Bot '.$this->DISCORD_BOTTOKEN));
-        curl_setopt($ch, CURLOPT_POST, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $response = curl_exec($ch);
-        return json_decode($response, true);
-    }
-
-    private function getUserId($usersList, $username, $discriminator) {
-        for ($i = 0; $i < count($usersList); $i++) {
-            if ($usersList[$i]['user']['username'] == $username && $usersList[$i]['user']['discriminator'] == $discriminator) {
-                $userId = $usersList[$i]['user']['id'];
-            }
-        }
-        if (isset($userId))
-            return $userId;
-        else
-            return null;
-    }
-
-    private function createVerificationToken($user, $ip) {
-        $discordBot = $this->get("exiaplayagain.discordbot");
-        $em = $this
-            ->getDoctrine()
-            ->getManager();
-        $discord_token = new DiscordTokens();
-        $discord_token->setType(0);
-        $discord_token->setUser($user);
-        $discord_token->setIp($ip);
-        $em->persist($discord_token);
-        $em->flush();
-
-        $message = $discordBot->sendPrivateMessage($user->getDiscordId(), "https://exiaplayagain.tk/discordbot/verify/".$discord_token->getToken());
-        if ($message['success'] == true)
-            $message['message'] = "Un lien de vérification a été envoyé à votre compte Discord. Il est valable 5 minutes. Veuillez l'ouvrir pour finaliser la procédure";
-        return $message;
-    }
-
-    private function createLoginToken($user, $ip) {
-        $discordBot = $this->get("exiaplayagain.discordbot");
-        $em = $this
-            ->getDoctrine()
-            ->getManager();
-        $discord_token = new DiscordTokens();
-        $discord_token->setType(1);
-        $discord_token->setUser($user);
-        $discord_token->setIp($ip);
-        $em->persist($discord_token);
-        $em->flush();
-
-        $message = $discordBot->sendPrivateMessage($user->getDiscordId(), "https://exiaplayagain.tk/discordbot/login/".$discord_token->getToken());
-        if ($message['success'] == true)
-            $message['message'] = "Un lien de connexion a été envoyé à votre compte Discord. Il est valable 5 minutes. Veuillez l'ouvrir pour vous connecter";
-        return $message;
-    }
-
-    private function deleteUserTokens($user) {
-        $em = $this
-            ->getDoctrine()
-            ->getManager();
-        $tokens = $em
-            ->getRepository('ExiaplayagainBundle:DiscordTokens')
-            ->findBy(array("user" => $user),    //where
-                array('validity' => 'DESC')//order
-            );
-        foreach ($tokens as $token) {
-            $em->remove($token);
-        }
-        $em->flush();
     }
 
 }
