@@ -15,12 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DiscordBotController extends Controller
 {
-    private $DISCORD_API = "https://discordapp.com/api";
-    private $DISCORD_BOTTOKEN = 'MjkwNzcyNTY2MzUwNjI2ODM2.C6hHFQ.Fi6eGTUpQt8lZ78Z8qTEShKAXwk'; // bot-exiaplayagain
-//    private $DISCORD_GUILDID = '220860793451708417'; // eXia PAU
-    private $DISCORD_GUILDID = '260074341033705474'; // Forains
-    private $DISCORD_ASSOCHANNELID = "245481987974889472";
-
     public function homeAction(Request $request) {
         $session = $request->getSession();
 
@@ -55,7 +49,7 @@ class DiscordBotController extends Controller
 
         if ($session->has('login')) {
             if ($request->isMethod('POST')) {
-                $usersList = $discordBot->getUsersList($this->DISCORD_GUILDID);
+                $usersList = $discordBot->getUsersList();
                 $username = explode("#", $_POST['username'])[0];
                 $userDiscriminator = explode("#", $_POST['username'])[1];
                 $userId = $discordBot->getUserId($usersList, $username, $userDiscriminator);

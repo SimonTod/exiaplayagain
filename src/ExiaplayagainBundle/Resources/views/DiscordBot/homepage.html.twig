@@ -4,6 +4,22 @@
     {{ parent() }}  - Discord Bot
 {% endblock %}
 
+{% block head %}
+<style>
+    .mytextarea {
+        resize: vertical;
+    }
+
+    #discordbot-content {
+        padding-top : 10px;
+    }
+
+    #discordbot-content .tab-content {
+        padding : 10px;
+    }
+</style>
+{% endblock %}
+
 {% block body %}
 
     <div class="fluid-row" id="header">
@@ -12,30 +28,50 @@
 
     </div>
 
-    <h3>send message</h3>
+    <div id="discordbot-content">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+            <li><a data-toggle="tab" href="#music-bots">Music Bots</a></li>
+        </ul>
 
-    <form method="post" action="{{ path('exiaplayagain_discordbot_sendmessage') }}">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-file-text"></i></span>
-                    <input type="text" class="form-control" placeholder="Content" name="content" required>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-id-card-o"></i></span>
-                    <input type="text" class="form-control" placeholder="Channel ID" name="channel_id" required>
-                </div>
-            </div>
-        </div>
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+                <h3>send message</h3>
 
-        <br>
+                <form method="post" action="{{ path('exiaplayagain_discordbot_sendmessage') }}">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-file-text"></i></span>
+                                <textarea rows="5" class="form-control mytextarea" placeholder="Content" name="content" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-id-card-o"></i></span>
+                                <input type="text" class="form-control" placeholder="Channel ID" name="channel_id" value="245481987974889472" required>
+                            </div>
 
-        <button type="submit" class="btn btn-default">Valider</button>
-    </form>
+                            <h3>Salons du serveur Discord</h3>
+                            <b># le_foyer</b> : 220860793451708417<br>
+                            <b># asso_lan</b> : 245481987974889472<br>
+                            <b># music_control</b> : 292286256702947338<br>
+                        </div>
+                    </div>
 
-    <hr>
+                    <br>
+
+                    <button type="submit" class="btn btn-default">Valider</button>
+                </form>
+
+                <hr>
+            </div> <!-- #home -->
+
+            <div id="music-bots" class="tab-pane fade">
+
+            </div> <!-- #music-bots -->
+        </div> <!-- .tab-content -->
+    </div> <!-- #discordbot-content -->
 
     {% for message in app.session.flashbag.get('discordbot_error') %}
         <div class="flashbag">

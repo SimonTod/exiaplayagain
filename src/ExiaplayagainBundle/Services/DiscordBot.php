@@ -121,9 +121,9 @@ class DiscordBot
         return $message;
     }
 
-    public function getUsersList($guildId) {
+    public function getUsersList() {
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->DISCORD_API. "/guilds/" . $guildId . "/members?limit=1000");
+        curl_setopt($ch, CURLOPT_URL, $this->DISCORD_API. "/guilds/" . $this->DISCORD_GUILDID . "/members?limit=1000");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Content-type: application/json',
             'Authorization: Bot '.$this->DISCORD_BOTTOKEN));
