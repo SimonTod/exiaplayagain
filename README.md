@@ -3,8 +3,6 @@ exiaplayagain
 
 A Symfony project created on October 21, 2016, 3:01 pm.
 
-yoyoyo test commit
-
 #### TODO
 
 - [x] games database
@@ -228,7 +226,7 @@ public function setPercentVotesGame2($percentVotesGame2)
 {
     $this->percentVotesGame2 = $percentVotesGame2;
 
-    return $this;
+    return $this;ntitie
 }
 
 private $numVotesGame3;
