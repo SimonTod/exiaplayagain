@@ -5,7 +5,7 @@ A Symfony project created on October 21, 2016, 3:01 pm.
 
 yoyoyo test commit
 
-####TODO
+#### TODO
 
 - [x] games database
     - name
@@ -35,12 +35,13 @@ yoyoyo test commit
 
 https://openclassrooms.com/courses/developpez-votre-site-web-avec-le-framework-symfony/securite-et-gestion-des-utilisateurs-1#/id/r-3624667
 
-####DEV INFO
-#####Discord Tokens Type :
+#### DEV INFO
+
+##### Discord Tokens Type :
 - 0 -> verify
 - 1 -> login
 
-####GENERATE ENTITIES FROM EXISTING DATABASE
+#### GENERATE ENTITIES FROM EXISTING DATABASE
 
 ```bash
 sudo php app/console doctrine:mapping:import --force ExiaplayagainBundle xml
@@ -48,7 +49,7 @@ sudo php app/console doctrine:mapping:convert --force annotation ./src
 sudo php app/console doctrine:generate:entities ExiaplayagainBundle
 ```
 
-####Deploy update on server
+#### Deploy update on server
 
 ```bash
 sudo git pull origin master
@@ -58,7 +59,7 @@ sudo mkdir app/cache app/logs
 sudo chmod -R 777 app/cache app/logs
 ```
 
-####SQL CREATE ALL TABLES
+#### SQL CREATE ALL TABLES
 
 ```sql
 CREATE TABLE `exiaplayagain`.`games` 
@@ -133,7 +134,7 @@ $$
 DELIMITER ;
 ```
 
-#####ADD IN ENTITY DISCORDTOKENS.PHP
+##### ADD IN ENTITY DISCORDTOKENS.PHP
 
 ```php
 public function __construct()
@@ -143,7 +144,7 @@ public function __construct()
 }
 ```
 
-#####ADD IN ENTITY VOTES.PHP
+##### ADD IN ENTITY VOTES.PHP
 
 ```php
 private $userHasVoted;
